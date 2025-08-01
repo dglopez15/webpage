@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Interés Compuesto | Simulador de Inversión</title>
+  <meta name="description" content="Simula tus inversiones a largo plazo con esta calculadora de interés compuesto. Compara diferentes escenarios con aportaciones variables y visualiza tus ganancias.">
+  <meta name="keywords" content="interés compuesto, simulador de inversión, calculadora financiera, ahorro, bolsa, finanzas personales">
+
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0b0c10; color: #f0f0f0; margin: 0; }
+    h1 { text-align: center; margin: 30px 0 10px; font-weight: 700; color: #66fcf1; font-size: 3rem; letter-spacing: 1px;}
+    h3 { 
+      margin: 20px 0 15px; 
+      color: #66fcf1; 
+      text-align:center;
+      font-size: 2rem;      /* ✅ más grande */
+      font-weight: 700;       /* ✅ más énfasis */
+      letter-spacing: 0.5px;  /* ✅ un poco de aire entre letras */
+    }
+    p.intro { text-align: center; max-width: 700px; margin: 0 auto 30px; font-size: 1rem; line-height: 1.6; color: #cccccc; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; text-align: center;}
+    label { display: block; margin-top: 12px; font-weight: bold; color: #45a29e; text-align: center;}
+    input, select {
+      width: 200px; padding: 8px; margin-top: 5px;
+      border-radius: 6px; border: none; background: #1f2833; color: #f0f0f0;
+      text-align: center; /* ✅ Centrado de texto en boxes */
+    }
+    input:focus, select:focus { outline: 2px solid #66fcf1; }
+    .field { display: inline-block; margin: 10px 15px; text-align: center; }
+
+    button { margin-top: 25px; padding: 14px 20px; background: #45a29e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1rem;}
+    button:hover { background: #66fcf1; color: #0b0c10; }
+
+    canvas { margin-top: 40px; background: #0b0c10; border-radius: 8px; width: 100%; max-width: 1000px; }
+    .adsense { margin: 30px auto; text-align: center; min-height: 90px; }
+    .resultados { margin-top: 30px; background: #0b0c10; padding: 15px; border-radius: 8px; text-align: left; }
+
+    .bloque-aporte { display: flex; gap: 10px; margin-top: 5px; align-items: center; justify-content: center;}
+    .bloque-aporte span { min-width: 80px; text-align:right; }
+    .bloque-aporte input { width: 120px; text-align:center; } /* ✅ Texto centrado en inputs de aportes */
+
+    .escenario { margin-bottom: 40px; padding: 10px 0; border-bottom: 1px solid #1f2833;}
+    .global-config { text-align: center; margin-bottom: 30px; }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de Interés Compuesto</h1>
+  <p class="intro">
+    Esta herramienta permite simular el crecimiento de una inversión a largo plazo utilizando el interés compuesto. 
+    Podrás definir varios escenarios con diferentes activos, capital inicial y aportaciones periódicas variables por bloques de 5 años. 
+    La calculadora generará un gráfico comparativo y mostrará la inversión final y las ganancias netas para cada escenario.
+  </p>
+
+  <!-- BLOQUE DE ADSENSE SUPERIOR -->
+  <div class="adsense">
+    <p>[Espacio publicitario]</p>
+  </div>
+
+  <div class="container">
+    <div class="global-config">
+      <div class="field">
+        <label>Número de escenarios</label>
+        <input type="number" id="numEscenarios" value="1" min="1" max="3" onchange="generarEscenarios()">
+      </div>
+      <div class="field">
+        <label>Nivel de aleatoriedad (1-10)</label>
+        <input type="number" id="aleatorioGlobal" value="5" min="1" max="10">
+      </div>
+    </div>
+
+    <div id="escenarios"></div>
+    <button onclick="calcular()">Calcular</button>
+    <canvas id="grafico"></canvas>
+    <div class="resultados" id="resultados"></div>
+  </div>
+
+  <!-- BLOQUE DE ADSENSE INFERIOR -->
+  <div class="adsense">
+    <p>[Espacio publicitario]</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const activos = {
+      "Airbus": [0.112, 0.14],
+      "Alphabet (Google)": [0.22, 0.1024],
+      "Amazon": [0.27, 0.16],
+      "Apple": [0.298, 0.1024],
+      "Aston Martin": [-0.4321, 0.25],
+      "Bitcoin": [1.761, 2.25],
+      "Cacao": [0.0961, 0.0628],
+      "Ferrari": [0.273, 0.0144],
+      "IBEX 35": [0.07, 0.04],
+      "Johnson & Johnson": [0.09, 0.03],
+      "Mercedes-Benz": [0.021, 0.0225],
+      "Microsoft": [0.174, 0.0625],
+      "NVIDIA": [0.472, 0.3025],
+      "Oro": [0.102, 0.0361],
+      "Petróleo (WTI)": [0.12, 0.25],
+      "S&P 500": [0.09, 0.0324],
+      "Tesla": [0.3379, 0.25],
+      "TSMC": [0.1895, 0.10],
+      "Volkswagen": [-0.0368, 0.01]
+    };
+
+    let chart;
+
+    function generarEscenarios() {
+      const n = parseInt(document.getElementById("numEscenarios").value);
+      const contenedor = document.getElementById("escenarios");
+      contenedor.innerHTML = "";
+      for (let i = 1; i <= n; i++) {
+        const esc = document.createElement("div");
+        esc.className = "escenario";
+        esc.innerHTML = `
+          <h3>Escenario ${i}</h3>
+          <div class="field">
+            <label>Años de inversión</label>
+            <input type="number" id="anios_${i}" value="20" min="1" max="50">
+          </div>
+          <div class="field">
+            <label>Capital inicial (€)</label>
+            <input type="number" id="capital_${i}" value="1000">
+          </div>
+          <div class="field">
+            <label>Activo</label>
+            <select id="activo_${i}">
+              ${Object.keys(activos).map(a => `<option value="${a}">${a}</option>`).join('')}
+            </select>
+          </div>
+          <div id="bloques_${i}"></div>
+        `;
+        contenedor.appendChild(esc);
+
+        generarBloques(i, 20);
+        document.getElementById(`anios_${i}`).addEventListener("change", (e)=>generarBloques(i,e.target.value));
+      }
+    }
+
+    function generarBloques(idEscenario, anios) {
+      const bloques = Math.ceil(anios/5);
+      const div = document.getElementById(`bloques_${idEscenario}`);
+      div.innerHTML = `<label style="text-align:center; display:block; margin-top:15px;">Aportación mensual por periodos de 5 años</label>`;
+      for (let b=1;b<=bloques;b++){
+        const inicio = (b-1)*5+1;
+        const fin = Math.min(b*5,anios);
+        div.innerHTML += `<div class="bloque-aporte"><span>${inicio}-${fin}:</span>
+                          <input type="number" id="aporte_${idEscenario}_${b}" value="100"></div>`;
+      }
+    }
+
+    function calcular() {
+      const n = parseInt(document.getElementById("numEscenarios").value);
+      const aleatorioGlobal = parseFloat(document.getElementById("aleatorioGlobal").value);
+      const seed = Math.floor(Math.random()*1000000);
+      let randomGen = mulberry32(seed);
+
+      const ctx = document.getElementById("grafico").getContext("2d");
+      if(chart) chart.destroy();
+      const datasets = [];
+      const resultadosDiv = document.getElementById("resultados");
+      resultadosDiv.innerHTML = `<p>Semilla aleatoria utilizada: ${seed}</p>`;
+
+      for (let i=1;i<=n;i++){
+        const anios = parseInt(document.getElementById(`anios_${i}`).value);
+        const capital = parseFloat(document.getElementById(`capital_${i}`).value);
+        const activo = document.getElementById(`activo_${i}`).value;
+        const [rentabilidad,varianza] = activos[activo];
+        const meses = anios*12;
+
+        let aportesAnuales = [];
+        const bloques = Math.ceil(anios/5);
+        for (let b=1;b<=bloques;b++){
+          const val = parseFloat(document.getElementById(`aporte_${i}_${b}`).value);
+          const inicio = (b-1)*5+1;
+          const fin = Math.min(b*5,anios);
+          for(let y=inicio;y<=fin;y++) aportesAnuales.push(val);
+        }
+
+        let saldo = capital;
+        let historial = [saldo];
+        let deposito = [capital];
+
+        for (let m=1;m<=meses;m++){
+          const muMensual = rentabilidad/12;
+          const sigmaMensual = Math.sqrt(varianza)/Math.sqrt(12)*(aleatorioGlobal/5);
+          const rnd = randomGen()*2-1;
+          const rendimiento = muMensual + sigmaMensual*rnd;
+          const anioActual = Math.floor((m-1)/12);
+          saldo = saldo*(1+rendimiento)+aportesAnuales[anioActual];
+          historial.push(saldo);
+          deposito.push(deposito[deposito.length-1]+aportesAnuales[anioActual]);
+        }
+
+        const color = `hsl(${Math.random()*360},70%,60%)`;
+        datasets.push({label:`Escenario ${i} (${activo})`, data:historial, borderColor:color, fill:false});
+        
+        resultadosDiv.innerHTML += `<p>
+          <b>Escenario ${i} (${activo})</b> → 
+          Final: €${saldo.toFixed(2)} | 
+          Invertido: €${deposito[deposito.length-1].toFixed(2)} | 
+          <span style="color:${color}; font-weight:bold;">Ganancia: €${(saldo-deposito[deposito.length-1]).toFixed(2)}</span>
+        </p>`;
+      }
+
+      chart = new Chart(ctx,{type:'line',data:{labels:Array.from({length:Math.max(...datasets.map(d=>d.data.length))},(_,i)=>i),datasets},options:{responsive:true,plugins:{legend:{labels:{color:'#f0f0f0'}}},scales:{x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}}}});
+    }
+
+    function mulberry32(a) {
+      return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      }
+    }
+
+    generarEscenarios();
+  </script>
+</body>
+</html>
