@@ -6,9 +6,11 @@
   <title>Calculadora de Interés Compuesto | Simulador de Inversión</title>
   <meta name="description" content="Simula tus inversiones a largo plazo con esta calculadora de interés compuesto. Compara diferentes escenarios con aportaciones variables y visualiza tus ganancias.">
   <meta name="keywords" content="interés compuesto, simulador de inversión, calculadora financiera, ahorro, bolsa, finanzas personales">
-  
+
+  <!-- Script global de AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473"
        crossorigin="anonymous"></script>
+
   <style>
     body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0b0c10; color: #f0f0f0; margin: 0; }
     h1 { text-align: center; margin: 30px 0 10px; font-weight: 700; color: #66fcf1; font-size: 3rem; letter-spacing: 1px;}
@@ -16,18 +18,22 @@
       margin: 20px 0 15px; 
       color: #66fcf1; 
       text-align:center;
-      font-size: 2rem;      /* ✅ más grande */
-      font-weight: 700;       /* ✅ más énfasis */
-      letter-spacing: 0.5px;  /* ✅ un poco de aire entre letras */
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
     p.intro { text-align: center; max-width: 700px; margin: 0 auto 30px; font-size: 1rem; line-height: 1.6; color: #cccccc; }
+
+    nav { text-align:center; margin:20px; }
+    nav a { color:#66fcf1; margin:0 15px; text-decoration:none; font-weight:bold; }
+    nav a:hover { text-decoration:underline; }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 20px; text-align: center;}
     label { display: block; margin-top: 12px; font-weight: bold; color: #45a29e; text-align: center;}
     input, select {
       width: 200px; padding: 8px; margin-top: 5px;
       border-radius: 6px; border: none; background: #1f2833; color: #f0f0f0;
-      text-align: center; /* ✅ Centrado de texto en boxes */
+      text-align: center;
     }
     input:focus, select:focus { outline: 2px solid #66fcf1; }
     .field { display: inline-block; margin: 10px 15px; text-align: center; }
@@ -41,7 +47,7 @@
 
     .bloque-aporte { display: flex; gap: 10px; margin-top: 5px; align-items: center; justify-content: center;}
     .bloque-aporte span { min-width: 80px; text-align:right; }
-    .bloque-aporte input { width: 120px; text-align:center; } /* ✅ Texto centrado en inputs de aportes */
+    .bloque-aporte input { width: 120px; text-align:center; }
 
     .escenario { margin-bottom: 40px; padding: 10px 0; border-bottom: 1px solid #1f2833;}
     .global-config { text-align: center; margin-bottom: 30px; }
@@ -54,9 +60,11 @@
     Podrás definir varios escenarios con diferentes activos, capital inicial y aportaciones periódicas variables por bloques de 5 años. 
     La calculadora generará un gráfico comparativo y mostrará la inversión final y las ganancias netas para cada escenario.
   </p>
-  <nav style="text-align:center; margin:20px;">
-    <a href="que-es-interes-compuesto.html" style="color:#66fcf1; margin:0 15px;">Qué es el interés compuesto</a>
-    <a href="estrategias-inversion.html" style="color:#66fcf1; margin:0 15px;">Estrategias de inversión</a>
+
+  <!-- Menú SEO -->
+  <nav>
+    <a href="que-es-interes-compuesto.html">Qué es el interés compuesto</a>
+    <a href="estrategias-inversion.html">Estrategias de inversión</a>
   </nav>
 
   <!-- BLOQUE DE ADSENSE SUPERIOR -->
@@ -217,7 +225,26 @@
         }
 
         const color = `hsl(${Math.random()*360},70%,60%)`;
-        datasets.push({label:`Escenario ${i} (${activo})`, data:historial, borderColor:color, fill:false});
+
+        // Línea principal: evolución del saldo
+        datasets.push({
+          label: `Escenario ${i} (${activo})`,
+          data: historial,
+          borderColor: color,
+          fill: false,
+          tension: 0.1
+        });
+
+        // Línea punteada: capital depositado
+        datasets.push({
+          label: `Depósito Escenario ${i}`,
+          data: deposito,
+          borderColor: color,
+          fill: false,
+          borderDash: [5,5],
+          pointRadius: 0,
+          tension: 0.1
+        });
         
         resultadosDiv.innerHTML += `<p>
           <b>Escenario ${i} (${activo})</b> → 
@@ -227,7 +254,21 @@
         </p>`;
       }
 
-      chart = new Chart(ctx,{type:'line',data:{labels:Array.from({length:Math.max(...datasets.map(d=>d.data.length))},(_,i)=>i),datasets},options:{responsive:true,plugins:{legend:{labels:{color:'#f0f0f0'}}},scales:{x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}}}});
+      chart = new Chart(ctx,{
+        type:'line',
+        data:{
+          labels:Array.from({length:Math.max(...datasets.map(d=>d.data.length))},(_,i)=>i),
+          datasets
+        },
+        options:{
+          responsive:true,
+          plugins:{legend:{labels:{color:'#f0f0f0'}}},
+          scales:{
+            x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
+            y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
+          }
+        }
+      });
     }
 
     function mulberry32(a) {
@@ -243,5 +284,6 @@
   </script>
 </body>
 </html>
+
 
 
