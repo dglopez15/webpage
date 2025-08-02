@@ -53,9 +53,8 @@
     .global-config { text-align: center; margin-bottom: 30px; }
 
     /* Overlay para pantalla completa */
-    /* Overlay para pantalla completa */
     #graficoOverlay {
-      display: none;  /* Oculto por defecto */
+      display: none; /* Oculto por defecto */
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
@@ -65,12 +64,12 @@
       align-items: center;
       flex-direction: column;
     }
-
     #graficoOverlay canvas {
       width: 95vw;
-      height: 80vh;
+      height: 80vh; /* Por defecto escritorio */
       background: #0b0c10;
       border-radius: 10px;
+      transition: height 0.3s ease;
     }
     #cerrarOverlay {
       margin-top: 15px;
@@ -142,7 +141,7 @@
           border-radius: 6px;
           cursor: pointer;
           font-weight: bold;
-      ">Ampliar</button>
+      ">🔍 Ampliar</button>
 
       <div id="graficoContainer">
         <canvas id="grafico"></canvas>
@@ -362,13 +361,27 @@
 
     fullscreenBtn.addEventListener("click", () => {
       graficoOverlay.style.display = "flex";
+
+      const canvasFull = document.querySelector("#graficoOverlay canvas");
+
+      if (window.innerWidth < 768) {
+        // Móvil: doblamos la altura
+        canvasFull.style.height = "160vh";
+      } else {
+        // Escritorio: altura estándar
+        canvasFull.style.height = "80vh";
+      }
     });
 
     cerrarOverlay.addEventListener("click", () => {
       graficoOverlay.style.display = "none";
+      const canvasFull = document.querySelector("#graficoOverlay canvas");
+      canvasFull.style.height = "80vh"; // restaurar
     });
   </script>
 </body>
 </html>
+
+
 
 
