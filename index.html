@@ -51,6 +51,40 @@
 
     .escenario { margin-bottom: 40px; padding: 10px 0; border-bottom: 1px solid #1f2833;}
     .global-config { text-align: center; margin-bottom: 30px; }
+
+    /* Overlay para pantalla completa */
+    #graficoOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #graficoOverlay canvas {
+      width: 95vw;
+      height: 80vh;
+      background: #0b0c10;
+      border-radius: 10px;
+    }
+    #cerrarOverlay {
+      margin-top: 15px;
+      padding: 8px 14px;
+      background: #45a29e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #cerrarOverlay:hover {
+      background: #66fcf1;
+      color: #0b0c10;
+    }
   </style>
 </head>
 <body>
@@ -95,7 +129,7 @@
     <div id="escenarios"></div>
     <button onclick="calcular()">Calcular</button>
 
-    <!-- Contenedor con botón de pantalla completa -->
+    <!-- Botón para abrir overlay -->
     <div style="position: relative; text-align: center; margin-top:40px;">
       <button id="fullscreenBtn" style="
           position: absolute;
@@ -115,6 +149,12 @@
     </div>
 
     <div class="resultados" id="resultados"></div>
+  </div>
+
+  <!-- Overlay para fullscreen -->
+  <div id="graficoOverlay">
+    <canvas id="graficoFull"></canvas>
+    <button id="cerrarOverlay">❌ Cerrar</button>
   </div>
 
   <!-- BLOQUE DE ADSENSE INFERIOR -->
@@ -207,7 +247,8 @@
       let randomGen = mulberry32(seed);
 
       const ctx = document.getElementById("grafico").getContext("2d");
-      if(chart) chart.destroy();
+      const ctxFull = document.getElementById("graficoFull").getContext("2d");
+      if(chart) { chart.destroy(); }
       const datasets = [];
       const resultadosDiv = document.getElementById("resultados");
       resultadosDiv.innerHTML = `<p>Semilla aleatoria utilizada: ${seed}</p>`;
@@ -286,6 +327,20 @@
           }
         }
       });
+
+      // Copiar gráfico al overlay
+      new Chart(ctxFull,{
+        type:'line',
+        data: chart.data,
+        options:{
+          responsive:true,
+          plugins:{legend:{labels:{color:'#f0f0f0'}}},
+          scales:{
+            x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
+            y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
+          }
+        }
+      });
     }
 
     function mulberry32(a) {
@@ -299,35 +354,18 @@
 
     generarEscenarios();
 
-    // Pantalla completa para el gráfico
+    // Overlay fullscreen
     const fullscreenBtn = document.getElementById("fullscreenBtn");
-    const graficoContainer = document.getElementById("graficoContainer");
+    const graficoOverlay = document.getElementById("graficoOverlay");
+    const cerrarOverlay = document.getElementById("cerrarOverlay");
 
     fullscreenBtn.addEventListener("click", () => {
-      if (!document.fullscreenElement) {
-        graficoContainer.requestFullscreen().catch(err => {
-          alert(`Error al intentar pantalla completa: ${err.message}`);
-        });
-      } else {
-        document.exitFullscreen();
-      }
+      graficoOverlay.style.display = "flex";
     });
 
-    document.addEventListener("fullscreenchange", () => {
-      const canvas = document.getElementById("grafico");
-      if (document.fullscreenElement) {
-        canvas.style.width = "95vw";
-        canvas.style.height = "80vh";
-        fullscreenBtn.textContent = "❌ Salir";
-      } else {
-        canvas.style.width = "100%";
-        canvas.style.height = "";
-        fullscreenBtn.textContent = "🔍 Ampliar";
-      }
+    cerrarOverlay.addEventListener("click", () => {
+      graficoOverlay.style.display = "none";
     });
   </script>
 </body>
 </html>
-
-
-
