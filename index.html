@@ -94,7 +94,26 @@
 
     <div id="escenarios"></div>
     <button onclick="calcular()">Calcular</button>
-    <canvas id="grafico"></canvas>
+
+    <!-- Contenedor con botón de pantalla completa -->
+    <div style="position: relative; text-align: center; margin-top:40px;">
+      <button id="fullscreenBtn" style="
+          position: absolute;
+          top: 10px; right: 10px;
+          background: #45a29e;
+          color: white;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: bold;
+      ">🔍 Ampliar</button>
+
+      <div id="graficoContainer">
+        <canvas id="grafico"></canvas>
+      </div>
+    </div>
+
     <div class="resultados" id="resultados"></div>
   </div>
 
@@ -226,7 +245,6 @@
 
         const color = `hsl(${Math.random()*360},70%,60%)`;
 
-        // Línea principal: evolución del saldo
         datasets.push({
           label: `Escenario ${i} (${activo})`,
           data: historial,
@@ -235,7 +253,6 @@
           tension: 0.1
         });
 
-        // Línea punteada: capital depositado
         datasets.push({
           label: `Depósito Escenario ${i}`,
           data: deposito,
@@ -281,6 +298,33 @@
     }
 
     generarEscenarios();
+
+    // Pantalla completa para el gráfico
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const graficoContainer = document.getElementById("graficoContainer");
+
+    fullscreenBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        graficoContainer.requestFullscreen().catch(err => {
+          alert(`Error al intentar pantalla completa: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    document.addEventListener("fullscreenchange", () => {
+      const canvas = document.getElementById("grafico");
+      if (document.fullscreenElement) {
+        canvas.style.width = "95vw";
+        canvas.style.height = "80vh";
+        fullscreenBtn.textContent = "❌ Salir";
+      } else {
+        canvas.style.width = "100%";
+        canvas.style.height = "";
+        fullscreenBtn.textContent = "🔍 Ampliar";
+      }
+    });
   </script>
 </body>
 </html>
