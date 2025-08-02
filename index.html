@@ -53,18 +53,19 @@
     .global-config { text-align: center; margin-bottom: 30px; }
 
     /* Overlay para pantalla completa */
+    /* Overlay para pantalla completa */
     #graficoOverlay {
-      display: none;
+      display: none;  /* Oculto por defecto */
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: rgba(0,0,0,0.9);
       z-index: 9999;
-      display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
     }
+
     #graficoOverlay canvas {
       width: 95vw;
       height: 80vh;
@@ -369,3 +370,4 @@
   </script>
 </body>
 </html>
+
