@@ -66,7 +66,7 @@
     }
     #graficoOverlay canvas {
       width: 95vw;
-      height: 80vh; /* Por defecto escritorio */
+      height: 160vh; /* Doble altura */
       background: #0b0c10;
       border-radius: 10px;
       transition: height 0.3s ease;
@@ -195,6 +195,7 @@
     };
 
     let chart;
+    let chartFull; // gráfico overlay
 
     function generarEscenarios() {
       const n = parseInt(document.getElementById("numEscenarios").value);
@@ -215,9 +216,7 @@
           </div>
           <div class="field">
             <label>Activo</label>
-            <select id="activo_${i}">
-              ${Object.keys(activos).map(a => `<option value="${a}">${a}</option>`).join('')}
-            </select>
+            <select id="activo_${i}">${Object.keys(activos).map(a => `<option value="${a}">${a}</option>`).join('')}</select>
           </div>
           <div id="bloques_${i}"></div>
         `;
@@ -249,6 +248,7 @@
       const ctx = document.getElementById("grafico").getContext("2d");
       const ctxFull = document.getElementById("graficoFull").getContext("2d");
       if(chart) { chart.destroy(); }
+      if(chartFull) { chartFull.destroy(); } // <-- destruimos overlay para actualizarlo
       const datasets = [];
       const resultadosDiv = document.getElementById("resultados");
       resultadosDiv.innerHTML = `<p>Semilla aleatoria utilizada: ${seed}</p>`;
@@ -328,8 +328,8 @@
         }
       });
 
-      // Copiar gráfico al overlay
-      new Chart(ctxFull,{
+      // Actualizamos gráfico overlay también
+      chartFull = new Chart(ctxFull,{
         type:'line',
         data: chart.data,
         options:{
@@ -361,26 +361,15 @@
 
     fullscreenBtn.addEventListener("click", () => {
       graficoOverlay.style.display = "flex";
-
-      const canvasFull = document.querySelector("#graficoOverlay canvas");
-
-      if (window.innerWidth < 768) {
-        // Móvil: doblamos la altura
-        canvasFull.style.height = "160vh";
-      } else {
-        // Escritorio: altura estándar
-        canvasFull.style.height = "80vh";
-      }
     });
 
     cerrarOverlay.addEventListener("click", () => {
       graficoOverlay.style.display = "none";
-      const canvasFull = document.querySelector("#graficoOverlay canvas");
-      canvasFull.style.height = "80vh"; // restaurar
     });
   </script>
 </body>
 </html>
+
 
 
 
