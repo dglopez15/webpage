@@ -239,66 +239,88 @@
     function calcular() {
       const n = parseInt(document.getElementById("numEscenarios").value);
       const aleatorioGlobal = parseFloat(document.getElementById("aleatorioGlobal").value);
-      const seed = Math.floor(Math.random()*1000000);
-      let randomGen = mulberry32(seed);
-
+      const seed = Math.floor(Math.random()*1000000); // 🔹 Semilla global
+    
       const ctx = document.getElementById("grafico").getContext("2d");
       const ctxFull = document.getElementById("graficoFull").getContext("2d");
-      if(chart) { chart.destroy(); }
-      if(chartFull) { chartFull.destroy(); }
+      if(chart) chart.destroy();
+      if(chartFull) chartFull.destroy();
+    
       const datasets = [];
       const resultadosDiv = document.getElementById("resultados");
       resultadosDiv.innerHTML = `<p>Semilla aleatoria utilizada: ${seed}</p>`;
-
-      for (let i=1;i<=n;i++){
+    
+      for (let i = 1; i <= n; i++) {
+        // 🔹 Reiniciamos el generador de aleatoriedad para cada escenario
+        let randomGen = mulberry32(seed);
+    
         const anios = parseInt(document.getElementById(`anios_${i}`).value);
         const capital = parseFloat(document.getElementById(`capital_${i}`).value);
         const activo = document.getElementById(`activo_${i}`).value;
         const [rentabilidad,varianza] = activos[activo];
         const meses = anios*12;
-
+    
+        // Generamos el vector de aportaciones anuales
         let aportesAnuales = [];
         const bloques = Math.ceil(anios/5);
-        for (let b=1;b<=bloques;b++){
+        for (let b = 1; b <= bloques; b++) {
           const val = parseFloat(document.getElementById(`aporte_${i}_${b}`).value);
-          const inicio = (b-1)*5+1;
-          const fin = Math.min(b*5,anios);
-          for(let y=inicio;y<=fin;y++) aportesAnuales.push(val);
+          const inicio = (b-1)*5 + 1;
+          const fin = Math.min(b*5, anios);
+          for(let y=inicio; y<=fin; y++) aportesAnuales.push(val);
         }
-
+    
+        // Simulación del saldo mes a mes
         let saldo = capital;
         let historial = [saldo];
         let deposito = [capital];
-
-        for (let m=1;m<=meses;m++){
-          const muMensual = rentabilidad/12;
-          const sigmaMensual = Math.sqrt(varianza)/Math.sqrt(12)*(aleatorioGlobal/5);
-          const rnd = randomGen()*2-1;
-          const rendimiento = muMensual + sigmaMensual*rnd;
+    
+        for (let m=1; m <= meses; m++) {
+          const muMensual = rentabilidad / 12;
+          const sigmaMensual = Math.sqrt(varianza) / Math.sqrt(12) * (aleatorioGlobal / 5);
+          const rnd = randomGen() * 2 - 1; // 🔹 Misma secuencia para todos los escenarios
+          const rendimiento = muMensual + sigmaMensual * rnd;
           const anioActual = Math.floor((m-1)/12);
-          saldo = saldo*(1+rendimiento)+aportesAnuales[anioActual];
+          saldo = saldo * (1 + rendimiento) + aportesAnuales[anioActual];
           historial.push(saldo);
-          deposito.push(deposito[deposito.length-1]+aportesAnuales[anioActual]);
+          deposito.push(deposito[deposito.length-1] + aportesAnuales[anioActual]);
         }
-
+    
         const color = `hsl(${Math.random()*360},70%,60%)`;
-
-        datasets.push({ label: `Escenario ${i} (${activo})`, data: historial, borderColor: color, fill: false, tension: 0.1 });
-        datasets.push({ label: `Depósito Escenario ${i}`, data: deposito, borderColor: color, fill: false, borderDash: [5,5], pointRadius: 0, tension: 0.1 });
-        
+    
+        datasets.push({
+          label: `Escenario ${i} (${activo})`,
+          data: historial,
+          borderColor: color,
+          fill: false,
+          tension: 0.1
+        });
+    
+        datasets.push({
+          label: `Depósito Escenario ${i}`,
+          data: deposito,
+          borderColor: color,
+          fill: false,
+          borderDash: [5,5],
+          pointRadius: 0,
+          tension: 0.1
+        });
+    
         resultadosDiv.innerHTML += `<p>
           <b>Escenario ${i} (${activo})</b> → 
           Final: €${saldo.toFixed(2)} | 
           Invertido: €${deposito[deposito.length-1].toFixed(2)} | 
-          <span style="color:${color}; font-weight:bold;">Ganancia: €${(saldo-deposito[deposito.length-1]).toFixed(2)}</span>
+          <span style="color:${color}; font-weight:bold;">
+            Ganancia: €${(saldo - deposito[deposito.length-1]).toFixed(2)}
+          </span>
         </p>`;
       }
-
-      // Gráfico principal sin responsive
-      chart = new Chart(ctx,{
+    
+      // Crear gráfico principal (no responsive para evitar temblores)
+      chart = new Chart(ctx, {
         type:'line',
         data:{
-          labels:Array.from({length:Math.max(...datasets.map(d=>d.data.length))},(_,i)=>i),
+          labels: Array.from({length: Math.max(...datasets.map(d=>d.data.length))}, (_,i)=>i),
           datasets
         },
         options:{
@@ -311,9 +333,9 @@
           }
         }
       });
-
-      // Overlay sí responsive
-      chartFull = new Chart(ctxFull,{
+    
+      // Crear gráfico overlay (sí responsive)
+      chartFull = new Chart(ctxFull, {
         type:'line',
         data: chart.data,
         options:{
@@ -327,6 +349,7 @@
         }
       });
     }
+
 
     function mulberry32(a) {
       return function() {
@@ -367,6 +390,7 @@
   </script>
 </body>
 </html>
+
 
 
 
