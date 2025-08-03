@@ -32,7 +32,16 @@
     button { margin-top: 25px; padding: 14px 20px; background: #45a29e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1rem;}
     button:hover { background: #66fcf1; color: #0b0c10; }
 
-    canvas { margin-top: 40px; background: #0b0c10; border-radius: 8px; width: 100%; max-width: 1000px; }
+    /* Canvas principal fijo para evitar temblores */
+    #grafico {
+      width: 100%;
+      max-width: 1000px;
+      height: 400px; /* altura fija */
+      margin-top: 40px;
+      background: #0b0c10;
+      border-radius: 8px;
+    }
+
     .adsense { margin: 30px auto; text-align: center; min-height: 90px; }
     .resultados { margin-top: 30px; background: #0b0c10; padding: 15px; border-radius: 8px; text-align: left; }
 
@@ -58,7 +67,6 @@
     #graficoOverlay canvas {
       width: 95vw;
       height: 80vh; /* base escritorio */
-      max-height: 95vh;
       background: #0b0c10;
       border-radius: 10px;
       transition: height 0.3s ease;
@@ -284,18 +292,38 @@
         </p>`;
       }
 
-      const optionsChart = {
-        responsive:true,
-        maintainAspectRatio:false,
-        plugins:{legend:{labels:{color:'#f0f0f0'}}},
-        scales:{
-          x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
-          y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
+      // Gráfico principal sin responsive
+      chart = new Chart(ctx,{
+        type:'line',
+        data:{
+          labels:Array.from({length:Math.max(...datasets.map(d=>d.data.length))},(_,i)=>i),
+          datasets
+        },
+        options:{
+          responsive:false,
+          maintainAspectRatio:false,
+          plugins:{legend:{labels:{color:'#f0f0f0'}}},
+          scales:{
+            x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
+            y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
+          }
         }
-      };
+      });
 
-      chart = new Chart(ctx,{ type:'line', data:{ labels:Array.from({length:Math.max(...datasets.map(d=>d.data.length))},(_,i)=>i), datasets }, options:optionsChart });
-      chartFull = new Chart(ctxFull,{ type:'line', data: chart.data, options: optionsChart });
+      // Overlay sí responsive
+      chartFull = new Chart(ctxFull,{
+        type:'line',
+        data: chart.data,
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          plugins:{legend:{labels:{color:'#f0f0f0'}}},
+          scales:{
+            x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
+            y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
+          }
+        }
+      });
     }
 
     function mulberry32(a) {
@@ -334,8 +362,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
