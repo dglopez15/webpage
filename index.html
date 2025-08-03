@@ -66,11 +66,13 @@
     }
     #graficoOverlay canvas {
       width: 95vw;
-      height: 80vh; /* base escritorio */
+      height: 80vh; /* base */
+      max-height: 95vh; /* evita que crezca infinito */
       background: #0b0c10;
       border-radius: 10px;
       transition: height 0.3s ease;
     }
+
     #cerrarOverlay {
       margin-top: 15px;
       padding: 8px 14px;
@@ -347,7 +349,7 @@
     
       // Ajustamos la altura CSS
       if (window.innerWidth < 768) {
-        canvasFull.style.height = "70vh";  // ← menos alto que 120vh
+        canvasFull.style.height = "90vh";  // ← menos alto que 120vh
       } else {
         canvasFull.style.height = "80vh";
       }
@@ -365,6 +367,7 @@
   </script>
 </body>
 </html>
+
 
 
 
