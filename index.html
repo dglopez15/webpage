@@ -317,6 +317,12 @@
       }
     
       // Crear gráfico principal (no responsive para evitar temblores)
+      const canvas = document.getElementById("grafico");
+      // Resetear tamaño CSS y atributos del canvas
+      canvas.style.width = "100%";
+      canvas.style.height = "400px";
+      canvas.width = canvas.offsetWidth;
+      canvas.height = 400;
       chart = new Chart(ctx, {
         type:'line',
         data:{
@@ -390,6 +396,7 @@
   </script>
 </body>
 </html>
+
 
 
 
