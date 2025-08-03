@@ -14,14 +14,7 @@
   <style>
     body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0b0c10; color: #f0f0f0; margin: 0; }
     h1 { text-align: center; margin: 30px 0 10px; font-weight: 700; color: #66fcf1; font-size: 3rem; letter-spacing: 1px;}
-    h3 { 
-      margin: 20px 0 15px; 
-      color: #66fcf1; 
-      text-align:center;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
+    h3 { margin: 20px 0 15px; color: #66fcf1; text-align:center; font-size: 2rem; font-weight: 700; letter-spacing: 0.5px; }
     p.intro { text-align: center; max-width: 700px; margin: 0 auto 30px; font-size: 1rem; line-height: 1.6; color: #cccccc; }
 
     nav { text-align:center; margin:20px; }
@@ -54,7 +47,7 @@
 
     /* Overlay para pantalla completa */
     #graficoOverlay {
-      display: none; /* Oculto por defecto */
+      display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
@@ -66,7 +59,7 @@
     }
     #graficoOverlay canvas {
       width: 95vw;
-      height: 160vh; /* Doble altura */
+      height: 80vh; /* base escritorio */
       background: #0b0c10;
       border-radius: 10px;
       transition: height 0.3s ease;
@@ -95,13 +88,11 @@
     La calculadora generará un gráfico comparativo y mostrará la inversión final y las ganancias netas para cada escenario.
   </p>
 
-  <!-- Menú SEO -->
   <nav>
     <a href="que-es-interes-compuesto.html">Qué es el interés compuesto</a>
     <a href="estrategias-inversion.html">Estrategias de inversión</a>
   </nav>
 
-  <!-- BLOQUE DE ADSENSE SUPERIOR -->
   <div class="adsense">
     <ins class="adsbygoogle"
          style="display:block"
@@ -129,7 +120,6 @@
     <div id="escenarios"></div>
     <button onclick="calcular()">Calcular</button>
 
-    <!-- Botón para abrir overlay -->
     <div style="position: relative; text-align: center; margin-top:40px;">
       <button id="fullscreenBtn" style="
           position: absolute;
@@ -151,13 +141,11 @@
     <div class="resultados" id="resultados"></div>
   </div>
 
-  <!-- Overlay para fullscreen -->
   <div id="graficoOverlay">
     <canvas id="graficoFull"></canvas>
     <button id="cerrarOverlay">❌ Cerrar</button>
   </div>
 
-  <!-- BLOQUE DE ADSENSE INFERIOR -->
   <div class="adsense">
     <ins class="adsbygoogle"
          style="display:block"
@@ -195,7 +183,7 @@
     };
 
     let chart;
-    let chartFull; // gráfico overlay
+    let chartFull;
 
     function generarEscenarios() {
       const n = parseInt(document.getElementById("numEscenarios").value);
@@ -248,7 +236,7 @@
       const ctx = document.getElementById("grafico").getContext("2d");
       const ctxFull = document.getElementById("graficoFull").getContext("2d");
       if(chart) { chart.destroy(); }
-      if(chartFull) { chartFull.destroy(); } // <-- destruimos overlay para actualizarlo
+      if(chartFull) { chartFull.destroy(); }
       const datasets = [];
       const resultadosDiv = document.getElementById("resultados");
       resultadosDiv.innerHTML = `<p>Semilla aleatoria utilizada: ${seed}</p>`;
@@ -312,35 +300,18 @@
         </p>`;
       }
 
-      chart = new Chart(ctx,{
-        type:'line',
-        data:{
-          labels:Array.from({length:Math.max(...datasets.map(d=>d.data.length))},(_,i)=>i),
-          datasets
-        },
-        options:{
-          responsive:true,
-          plugins:{legend:{labels:{color:'#f0f0f0'}}},
-          scales:{
-            x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
-            y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
-          }
+      const optionsChart = {
+        responsive:true,
+        maintainAspectRatio:false, // <- importante para que respete altura CSS
+        plugins:{legend:{labels:{color:'#f0f0f0'}}},
+        scales:{
+          x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
+          y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
         }
-      });
+      };
 
-      // Actualizamos gráfico overlay también
-      chartFull = new Chart(ctxFull,{
-        type:'line',
-        data: chart.data,
-        options:{
-          responsive:true,
-          plugins:{legend:{labels:{color:'#f0f0f0'}}},
-          scales:{
-            x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
-            y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
-          }
-        }
-      });
+      chart = new Chart(ctx,{ type:'line', data:{ labels:Array.from({length:Math.max(...datasets.map(d=>d.data.length))},(_,i)=>i), datasets }, options:optionsChart });
+      chartFull = new Chart(ctxFull,{ type:'line', data: chart.data, options: optionsChart });
     }
 
     function mulberry32(a) {
@@ -354,13 +325,21 @@
 
     generarEscenarios();
 
-    // Overlay fullscreen
     const fullscreenBtn = document.getElementById("fullscreenBtn");
     const graficoOverlay = document.getElementById("graficoOverlay");
     const cerrarOverlay = document.getElementById("cerrarOverlay");
 
     fullscreenBtn.addEventListener("click", () => {
       graficoOverlay.style.display = "flex";
+      const canvasFull = document.querySelector("#graficoOverlay canvas");
+
+      if (window.innerWidth < 768) {
+        canvasFull.style.height = "150vh";  // móvil muy alto
+      } else {
+        canvasFull.style.height = "80vh";   // escritorio
+      }
+
+      if(chartFull){ chartFull.resize(); } // redibuja para ocupar altura real
     });
 
     cerrarOverlay.addEventListener("click", () => {
