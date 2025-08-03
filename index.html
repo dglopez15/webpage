@@ -7,9 +7,7 @@
   <meta name="description" content="Simula tus inversiones a largo plazo con esta calculadora de interés compuesto. Compara diferentes escenarios con aportaciones variables y visualiza tus ganancias.">
   <meta name="keywords" content="interés compuesto, simulador de inversión, calculadora financiera, ahorro, bolsa, finanzas personales">
 
-  <!-- Script global de AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473"
-       crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473" crossorigin="anonymous"></script>
 
   <style>
     body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0b0c10; color: #f0f0f0; margin: 0; }
@@ -60,6 +58,7 @@
     #graficoOverlay canvas {
       width: 95vw;
       height: 80vh; /* base escritorio */
+      max-height: 95vh;
       background: #0b0c10;
       border-radius: 10px;
       transition: height 0.3s ease;
@@ -274,23 +273,8 @@
 
         const color = `hsl(${Math.random()*360},70%,60%)`;
 
-        datasets.push({
-          label: `Escenario ${i} (${activo})`,
-          data: historial,
-          borderColor: color,
-          fill: false,
-          tension: 0.1
-        });
-
-        datasets.push({
-          label: `Depósito Escenario ${i}`,
-          data: deposito,
-          borderColor: color,
-          fill: false,
-          borderDash: [5,5],
-          pointRadius: 0,
-          tension: 0.1
-        });
+        datasets.push({ label: `Escenario ${i} (${activo})`, data: historial, borderColor: color, fill: false, tension: 0.1 });
+        datasets.push({ label: `Depósito Escenario ${i}`, data: deposito, borderColor: color, fill: false, borderDash: [5,5], pointRadius: 0, tension: 0.1 });
         
         resultadosDiv.innerHTML += `<p>
           <b>Escenario ${i} (${activo})</b> → 
@@ -302,7 +286,7 @@
 
       const optionsChart = {
         responsive:true,
-        maintainAspectRatio:false, // <- importante para que respete altura CSS
+        maintainAspectRatio:false,
         plugins:{legend:{labels:{color:'#f0f0f0'}}},
         scales:{
           x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
@@ -334,12 +318,14 @@
       const canvasFull = document.querySelector("#graficoOverlay canvas");
 
       if (window.innerWidth < 768) {
-        canvasFull.style.height = "150vh";  // móvil muy alto
+        canvasFull.style.height = "120vh";  // móvil altura moderada
       } else {
-        canvasFull.style.height = "80vh";   // escritorio
+        canvasFull.style.height = "80vh";
       }
 
-      if(chartFull){ chartFull.resize(); } // redibuja para ocupar altura real
+      if(chartFull){
+        setTimeout(()=>chartFull.resize(),100); // redibujo único
+      }
     });
 
     cerrarOverlay.addEventListener("click", () => {
