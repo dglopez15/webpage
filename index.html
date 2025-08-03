@@ -344,15 +344,18 @@
     fullscreenBtn.addEventListener("click", () => {
       graficoOverlay.style.display = "flex";
       const canvasFull = document.querySelector("#graficoOverlay canvas");
-
+    
+      // Ajustamos la altura CSS
       if (window.innerWidth < 768) {
-        canvasFull.style.height = "70vh";  // móvil altura moderada
+        canvasFull.style.height = "90vh";  // ← menos alto que 120vh
       } else {
         canvasFull.style.height = "80vh";
       }
-
+    
+      // Forzamos a Chart.js a recalcular respetando CSS
       if(chartFull){
-        setTimeout(()=>chartFull.resize(),100); // redibujo único
+        chartFull.options.maintainAspectRatio = false; 
+        chartFull.resize();
       }
     });
 
@@ -362,5 +365,6 @@
   </script>
 </body>
 </html>
+
 
 
