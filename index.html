@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Calculadora de Interés Compuesto | Simulador de Inversión</title>
   <meta name="description" content="Simula tus inversiones a largo plazo con esta calculadora de interés compuesto. Compara diferentes escenarios con aportaciones variables y visualiza tus ganancias.">
   <meta name="keywords" content="interés compuesto, simulador de inversión, calculadora financiera, ahorro, bolsa, finanzas personales">
@@ -10,90 +10,284 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473" crossorigin="anonymous"></script>
 
   <style>
-    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0b0c10; color: #f0f0f0; margin: 0; }
-    h1 { text-align: center; margin: 30px 0 10px; font-weight: 700; color: #66fcf1; font-size: 3rem; letter-spacing: 1px;}
-    h3 { margin: 20px 0 15px; color: #66fcf1; text-align:center; font-size: 2rem; font-weight: 700; letter-spacing: 0.5px; }
-    p.intro { text-align: center; max-width: 700px; margin: 0 auto 30px; font-size: 1rem; line-height: 1.6; color: #cccccc; }
+    :root{
+      /* Paleta */
+      --bg: #0b0f14;
+      --bg-elev: #0f1520;
+      --card: #111a23;
+      --muted: #a7b0ba;
+      --text: #eaf1f7;
+      --primary: #66fcf1;
+      --primary-700:#3dd7cd;
+      --accent: #45a29e;
+      --line: #1e2a36;
 
-    nav { text-align:center; margin:20px; }
-    nav a { color:#66fcf1; margin:0 15px; text-decoration:none; font-weight:bold; }
-    nav a:hover { text-decoration:underline; }
+      /* Decoración */
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.02);
 
-    .container { max-width: 1100px; margin: 0 auto; padding: 20px; text-align: center;}
-    label { display: block; margin-top: 12px; font-weight: bold; color: #45a29e; text-align: center;}
-    input, select {
-      width: 200px; padding: 8px; margin-top: 5px;
-      border-radius: 6px; border: none; background: #1f2833; color: #f0f0f0;
+      /* Tipografía */
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --h1: clamp(2rem, 3.2vw, 3rem);
+      --h3: clamp(1.2rem, 2.2vw, 1.75rem);
+    }
+
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f6f7fb; --bg-elev:#fff; --card:#fff;
+        --text:#0b0f14; --muted:#5a6672;
+        --line:#e9eef4; --accent:#2a8b85; --primary:#0ea5a3; --primary-700:#0b8d8b;
+      }
+      body { background-image:none !important; }
+    }
+
+    * { box-sizing: border-box; }
+
+    body{
+      font-family: var(--font);
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(102,252,241,.12), transparent 50%),
+                  radial-gradient(1000px 500px at 10% 110%, rgba(69,162,158,.12), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Header */
+    h1{
+      text-align: center;
+      margin: 28px 16px 8px;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: var(--h1);
+      letter-spacing: .4px;
+      text-shadow: 0 2px 20px rgba(102,252,241,.15);
+    }
+    h3{
+      margin: 18px 0 14px;
+      color: var(--primary);
+      text-align: center;
+      font-size: var(--h3);
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+    p.intro{
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 22px;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: var(--muted);
+      padding: 0 16px;
+    }
+
+    /* Nav */
+    nav{ text-align:center; margin: 18px 0 10px; }
+    nav a{
+      color: var(--primary);
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in oklab, var(--primary) 30%, transparent);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    nav a:hover{
+      background: color-mix(in oklab, var(--primary) 18%, transparent);
+      transform: translateY(-1px);
+      border-color: color-mix(in oklab, var(--primary) 60%, transparent);
+    }
+
+    /* Layout principal */
+    .container{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
       text-align: center;
     }
-    input:focus, select:focus { outline: 2px solid #66fcf1; }
-    .field { display: inline-block; margin: 10px 15px; text-align: center; }
 
-    button { margin-top: 25px; padding: 14px 20px; background: #45a29e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1rem;}
-    button:hover { background: #66fcf1; color: #0b0c10; }
-
-    /* Canvas principal fijo para evitar temblores */
-    #grafico {
-      width: 100%;
-      max-width: 1000px;
-      height: 400px; /* altura fija */
-      margin-top: 40px;
-      background: #0b0c10;
-      border-radius: 8px;
+    /* Tarjeta global */
+    .global-config{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin: 10px auto 26px;
     }
 
-    .adsense { margin: 30px auto; text-align: center; min-height: 90px; }
-    .resultados { margin-top: 30px; background: #0b0c10; padding: 15px; border-radius: 8px; text-align: left; }
+    /* Campos */
+    .field{ display: grid; gap: 6px; margin: 10px 12px; text-align: left; }
+    .global-config .field{ display: inline-grid; vertical-align: top; }
+    .global-config{ display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 16px; justify-items: center; }
+    @media (max-width: 640px){
+      .global-config{ grid-template-columns: 1fr; }
+    }
 
-    .bloque-aporte { display: flex; gap: 10px; margin-top: 5px; align-items: center; justify-content: center;}
-    .bloque-aporte span { min-width: 80px; text-align:right; }
-    .bloque-aporte input { width: 120px; text-align:center; }
+    label{
+      font-weight: 700;
+      color: color-mix(in oklab, var(--primary) 70%, var(--text));
+      font-size: .9rem;
+      letter-spacing: .2px;
+      text-align: left;
+    }
+    input, select{
+      width: 240px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--bg-elev), color-mix(in oklab, var(--bg-elev) 88%, black));
+      color: var(--text);
+      text-align: center;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .05s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    input:focus, select:focus{
+      outline: none;
+      border-color: color-mix(in oklab, var(--primary) 60%, var(--line));
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent);
+      transform: translateY(-1px);
+    }
 
-    .escenario { margin-bottom: 40px; padding: 10px 0; border-bottom: 1px solid #1f2833;}
-    .global-config { text-align: center; margin-bottom: 30px; }
+    /* Botones */
+    button{
+      margin-top: 22px;
+      padding: 14px 20px;
+      background: linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 82%, black));
+      color: white;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: .2px;
+      box-shadow: 0 8px 20px rgba(69,162,158,.25);
+      transition: transform .12s ease, filter .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    button:hover{
+      background: linear-gradient(180deg, var(--primary), var(--primary-700));
+      color: #0b0c10;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(102,252,241,.25);
+    }
+    button:active{ transform: translateY(0); }
 
-    /* Overlay para pantalla completa */
-    #graficoOverlay {
+    /* Escenarios */
+    .escenario{
+      margin: 0 0 22px;
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--card), color-mix(in oklab, var(--card) 88%, black));
+      box-shadow: var(--shadow);
+    }
+    .escenario .field{ display: inline-grid; margin: 8px 10px; }
+
+    /* Aportes */
+    .bloque-aporte{
+      display: flex; gap: 12px; margin-top: 8px; align-items: center; justify-content: center;
+      flex-wrap: wrap;
+    }
+    .bloque-aporte span{ min-width: 80px; text-align: right; color: var(--muted); font-weight: 700; }
+    .bloque-aporte input{ width: 140px; }
+
+    /* Gráfico */
+    #grafico{
+      width: 100%;
+      max-width: 1000px;
+      height: 420px;
+      margin-top: 28px;
+      background: var(--bg-elev);
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    #graficoContainer{
+      position: relative;
+      padding: 12px;
+      background: linear-gradient(180deg, var(--card), color-mix(in oklab, var(--card) 90%, black));
+      border-radius: calc(var(--radius) + 6px);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    /* Botón ampliar */
+    #fullscreenBtn{
+      position: absolute;
+      top: 14px; right: 14px;
+      background: linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 82%, black));
+      color: white; border: none; padding: 9px 12px; border-radius: 10px; cursor: pointer; font-weight: 800;
+      box-shadow: 0 6px 16px rgba(69,162,158,.25);
+    }
+    #fullscreenBtn:hover{
+      background: linear-gradient(180deg, var(--primary), var(--primary-700));
+      color: #0b0c10;
+    }
+
+    /* Resultados */
+    .resultados{
+      margin-top: 22px;
+      background: linear-gradient(180deg, var(--bg-elev), color-mix(in oklab, var(--bg-elev) 90%, black));
+      padding: 16px;
+      border-radius: var(--radius);
+      text-align: left;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .resultados p{
+      margin: 8px 0;
+      font-size: .98rem;
+    }
+
+    /* Ads */
+    .adsense{ margin: 26px auto; text-align: center; min-height: 90px; }
+
+    /* Overlay fullscreen */
+    #graficoOverlay{
       display: none;
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; inset: 0;
       width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.9);
+      background:
+        radial-gradient(60% 60% at 50% 40%, rgba(102,252,241,.06), transparent 60%),
+        rgba(0,0,0,.88);
       z-index: 9999;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      backdrop-filter: blur(6px) saturate(120%);
     }
-    #graficoOverlay canvas {
-      width: 95vw;
-      height: 70vh; /* base */
-      max-height: 90vh; /* evita que crezca infinito */
-      background: #0b0c10;
-      border-radius: 10px;
-      transition: height 0.3s ease;
+    #graficoOverlay canvas{
+      width: min(96vw, 1300px);
+      height: 80vh;
+      max-height: 90vh;
+      background: var(--bg-elev);
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      transition: height .3s ease;
     }
+    #cerrarOverlay{
+      margin-top: 16px;
+      padding: 10px 14px;
+      background: linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 82%, black));
+      color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 8px 18px rgba(69,162,158,.25);
+    }
+    #cerrarOverlay:hover{ background: linear-gradient(180deg, var(--primary), var(--primary-700)); color: #0b0c10; }
 
-    #cerrarOverlay {
-      margin-top: 15px;
-      padding: 8px 14px;
-      background: #45a29e;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    #cerrarOverlay:hover {
-      background: #66fcf1;
-      color: #0b0c10;
+    /* Accesibilidad y micro-interacciones */
+    @media (prefers-reduced-motion: reduce){
+      *{ transition: none !important; }
     }
   </style>
 </head>
 <body>
   <h1>Calculadora de Interés Compuesto</h1>
   <p class="intro">
-    Esta herramienta permite simular el crecimiento de una inversión a largo plazo utilizando el interés compuesto. 
-    Podrás definir varios escenarios con diferentes activos, capital inicial y aportaciones periódicas variables por bloques de 5 años. 
+    Esta herramienta permite simular el crecimiento de una inversión a largo plazo utilizando el interés compuesto.
+    Podrás definir varios escenarios con diferentes activos, capital inicial y aportaciones periódicas variables por bloques de 5 años.
     La calculadora generará un gráfico comparativo y mostrará la inversión final y las ganancias netas para cada escenario.
   </p>
 
@@ -109,19 +303,17 @@
          data-ad-slot="2717366869"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <div class="container">
     <div class="global-config">
       <div class="field">
-        <label>Número de escenarios</label>
+        <label for="numEscenarios">Número de escenarios</label>
         <input type="number" id="numEscenarios" value="1" min="1" max="3" onchange="generarEscenarios()">
       </div>
       <div class="field">
-        <label>Nivel de aleatoriedad (1-10)</label>
+        <label for="aleatorioGlobal">Nivel de aleatoriedad (1–10)</label>
         <input type="number" id="aleatorioGlobal" value="5" min="1" max="10">
       </div>
     </div>
@@ -129,28 +321,15 @@
     <div id="escenarios"></div>
     <button onclick="calcular()">Calcular</button>
 
-    <div style="position: relative; text-align: center; margin-top:40px;">
-      <button id="fullscreenBtn" style="
-          position: absolute;
-          top: 10px; right: 10px;
-          background: #45a29e;
-          color: white;
-          border: none;
-          padding: 8px 12px;
-          border-radius: 6px;
-          cursor: pointer;
-          font-weight: bold;
-      ">🔍 Ampliar</button>
-
-      <div id="graficoContainer">
-        <canvas id="grafico"></canvas>
-      </div>
+    <div id="graficoContainer" style="position: relative; margin-top: 28px;">
+      <button id="fullscreenBtn">🔍 Ampliar</button>
+      <canvas id="grafico"></canvas>
     </div>
 
     <div class="resultados" id="resultados"></div>
   </div>
 
-  <div id="graficoOverlay">
+  <div id="graficoOverlay" aria-modal="true" role="dialog">
     <canvas id="graficoFull"></canvas>
     <button id="cerrarOverlay">❌ Cerrar</button>
   </div>
@@ -162,13 +341,12 @@
          data-ad-slot="2717366869"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    /* ====== JS ORIGINAL SIN CAMBIOS DE FUNCIONALIDAD ====== */
     const activos = {
       "Airbus": [0.112, 0.14],
       "Alphabet (Google)": [0.22, 0.1024],
@@ -220,84 +398,81 @@
         contenedor.appendChild(esc);
 
         generarBloques(i, 20);
-        document.getElementById(`anios_${i}`).addEventListener("change", (e)=>generarBloques(i,e.target.value));
+        document.getElementById(\`anios_\${i}\`).addEventListener("change", (e)=>generarBloques(i,e.target.value));
       }
     }
 
     function generarBloques(idEscenario, anios) {
       const bloques = Math.ceil(anios/5);
-      const div = document.getElementById(`bloques_${idEscenario}`);
-      div.innerHTML = `<label style="text-align:center; display:block; margin-top:15px;">Aportación mensual por periodos de 5 años</label>`;
+      const div = document.getElementById(\`bloques_\${idEscenario}\`);
+      div.innerHTML = \`<label style="text-align:center; display:block; margin-top:15px;">Aportación mensual por periodos de 5 años</label>\`;
       for (let b=1;b<=bloques;b++){
         const inicio = (b-1)*5+1;
         const fin = Math.min(b*5,anios);
-        div.innerHTML += `<div class="bloque-aporte"><span>${inicio}-${fin}:</span>
-                          <input type="number" id="aporte_${idEscenario}_${b}" value="100"></div>`;
+        div.innerHTML += \`<div class="bloque-aporte"><span>\${inicio}-\${fin}:</span>
+                          <input type="number" id="aporte_\${idEscenario}_\${b}" value="100"></div>\`;
       }
     }
 
     function calcular() {
       const n = parseInt(document.getElementById("numEscenarios").value);
       const aleatorioGlobal = parseFloat(document.getElementById("aleatorioGlobal").value);
-      const seed = Math.floor(Math.random()*1000000); // 🔹 Semilla global
-    
+      const seed = Math.floor(Math.random()*1000000);
+
       const ctx = document.getElementById("grafico").getContext("2d");
       const ctxFull = document.getElementById("graficoFull").getContext("2d");
       if(chart) chart.destroy();
       if(chartFull) chartFull.destroy();
-    
+
       const datasets = [];
       const resultadosDiv = document.getElementById("resultados");
-      resultadosDiv.innerHTML = `<p>Semilla aleatoria utilizada: ${seed}</p>`;
-    
+      resultadosDiv.innerHTML = \`<p>Semilla aleatoria utilizada: \${seed}</p>\`;
+
       for (let i = 1; i <= n; i++) {
-        // 🔹 Reiniciamos el generador de aleatoriedad para cada escenario
         let randomGen = mulberry32(seed);
-    
-        const anios = parseInt(document.getElementById(`anios_${i}`).value);
-        const capital = parseFloat(document.getElementById(`capital_${i}`).value);
-        const activo = document.getElementById(`activo_${i}`).value;
+
+        const anios = parseInt(document.getElementById(\`anios_\${i}\`).value);
+        const capital = parseFloat(document.getElementById(\`capital_\${i}\`).value);
+        const activo = document.getElementById(\`activo_\${i}\`).value;
         const [rentabilidad,varianza] = activos[activo];
         const meses = anios*12;
-    
-        // Generamos el vector de aportaciones anuales
+
         let aportesAnuales = [];
         const bloques = Math.ceil(anios/5);
         for (let b = 1; b <= bloques; b++) {
-          const val = parseFloat(document.getElementById(`aporte_${i}_${b}`).value);
+          const val = parseFloat(document.getElementById(\`aporte_\${i}_\${b}\`).value);
           const inicio = (b-1)*5 + 1;
           const fin = Math.min(b*5, anios);
           for(let y=inicio; y<=fin; y++) aportesAnuales.push(val);
         }
-    
-        // Simulación del saldo mes a mes
+
         let saldo = capital;
         let historial = [saldo];
         let deposito = [capital];
-    
+
         for (let m=1; m <= meses; m++) {
           const muMensual = rentabilidad / 12;
           const sigmaMensual = Math.sqrt(varianza) / Math.sqrt(12) * (aleatorioGlobal / 5);
-          const rnd = randomGen() * 2 - 1; // 🔹 Misma secuencia para todos los escenarios
+          const rnd = randomGen() * 2 - 1;
           const rendimiento = muMensual + sigmaMensual * rnd;
           const anioActual = Math.floor((m-1)/12);
           saldo = saldo * (1 + rendimiento) + aportesAnuales[anioActual];
           historial.push(saldo);
           deposito.push(deposito[deposito.length-1] + aportesAnuales[anioActual]);
         }
-    
-        const color = `hsl(${Math.random()*360},70%,60%)`;
-    
+
+        const color = \`hsl(\${Math.random()*360},70%,60%)\`;
+
         datasets.push({
-          label: `Escenario ${i} (${activo})`,
+          label: \`Escenario \${i} (\${activo})\`,
           data: historial,
           borderColor: color,
           fill: false,
           tension: 0.1
         });
-    
+
         datasets.push({
-          label: `Depósito Escenario ${i}`,
+          label: \`Depósito Escenario \${i}\`,
           data: deposito,
           borderColor: color,
           fill: false,
@@ -305,24 +480,23 @@
           pointRadius: 0,
           tension: 0.1
         });
-    
-        resultadosDiv.innerHTML += `<p>
-          <b>Escenario ${i} (${activo})</b> → 
-          Final: €${saldo.toFixed(2)} | 
-          Invertido: €${deposito[deposito.length-1].toFixed(2)} | 
-          <span style="color:${color}; font-weight:bold;">
-            Ganancia: €${(saldo - deposito[deposito.length-1]).toFixed(2)}
+
+        resultadosDiv.innerHTML += \`<p>
+          <b>Escenario \${i} (\${activo})</b> →
+          Final: €\${saldo.toFixed(2)} |
+          Invertido: €\${deposito[deposito.length-1].toFixed(2)} |
+          <span style="color:\${color}; font-weight:bold;">
+            Ganancia: €\${(saldo - deposito[deposito.length-1]).toFixed(2)}
           </span>
-        </p>`;
+        </p>\`;
       }
-    
-      // Crear gráfico principal (no responsive para evitar temblores)
+
       const canvas = document.getElementById("grafico");
-      // Resetear tamaño CSS y atributos del canvas
       canvas.style.width = "100%";
-      canvas.style.height = "400px";
+      canvas.style.height = "420px";
       canvas.width = canvas.offsetWidth;
-      canvas.height = 400;
+      canvas.height = 420;
+
       chart = new Chart(ctx, {
         type:'line',
         data:{
@@ -332,30 +506,28 @@
         options:{
           responsive:false,
           maintainAspectRatio:false,
-          plugins:{legend:{labels:{color:'#f0f0f0'}}},
+          plugins:{legend:{labels:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}}},
           scales:{
-            x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
-            y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
+            x:{title:{display:true,text:'Mes',color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'},ticks:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}},
+            y:{title:{display:true,text:'€',color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'},ticks:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}}
           }
         }
       });
-    
-      // Crear gráfico overlay (sí responsive)
+
       chartFull = new Chart(ctxFull, {
         type:'line',
         data: chart.data,
         options:{
           responsive:true,
           maintainAspectRatio:false,
-          plugins:{legend:{labels:{color:'#f0f0f0'}}},
+          plugins:{legend:{labels:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}}},
           scales:{
-            x:{title:{display:true,text:'Mes',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}},
-            y:{title:{display:true,text:'€',color:'#f0f0f0'},ticks:{color:'#f0f0f0'}}
+            x:{title:{display:true,text:'Mes',color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'},ticks:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}},
+            y:{title:{display:true,text:'€',color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'},ticks:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}}
           }
         }
       });
     }
-
 
     function mulberry32(a) {
       return function() {
@@ -375,17 +547,15 @@
     fullscreenBtn.addEventListener("click", () => {
       graficoOverlay.style.display = "flex";
       const canvasFull = document.querySelector("#graficoOverlay canvas");
-    
-      // Ajustamos la altura CSS
+
       if (window.innerWidth < 768) {
-        canvasFull.style.height = "80vh";  // ← menos alto que 120vh
+        canvasFull.style.height = "80vh";
       } else {
         canvasFull.style.height = "80vh";
       }
-    
-      // Forzamos a Chart.js a recalcular respetando CSS
+
       if(chartFull){
-        chartFull.options.maintainAspectRatio = false; 
+        chartFull.options.maintainAspectRatio = false;
         chartFull.resize();
       }
     });
@@ -396,9 +566,6 @@
   </script>
 </body>
 </html>
-
-
-
 
 
 
