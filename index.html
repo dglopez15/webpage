@@ -2,284 +2,140 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calculadora de Interés Compuesto | Simulador de Inversión</title>
-  <meta name="description" content="Simula tus inversiones a largo plazo con esta calculadora de interés compuesto. Compara diferentes escenarios con aportaciones variables y visualiza tus ganancias.">
-  <meta name="keywords" content="interés compuesto, simulador de inversión, calculadora financiera, ahorro, bolsa, finanzas personales">
+  <meta name="description" content="Simula tus inversiones a largo plazo con esta calculadora de interés compuesto. Compara diferentes escenarios con aportaciones variables y visualiza tus ganancias." />
+  <meta name="keywords" content="interés compuesto, simulador de inversión, calculadora financiera, ahorro, bolsa, finanzas personales" />
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473" crossorigin="anonymous"></script>
 
   <style>
-    :root{
-      /* Paleta */
-      --bg: #0b0f14;
-      --bg-elev: #0f1520;
-      --card: #111a23;
-      --muted: #a7b0ba;
-      --text: #eaf1f7;
+    :root {
+      --bg: #0b0c10;
+      --bg-2: #0f1117;
+      --card: #11161d;
+      --muted: #9aa4af;
+      --text: #f3f5f7;
       --primary: #66fcf1;
-      --primary-700:#3dd7cd;
-      --accent: #45a29e;
-      --line: #1e2a36;
-
-      /* Decoración */
-      --radius: 14px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.02);
-
-      /* Tipografía */
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
-      --h1: clamp(2rem, 3.2vw, 3rem);
-      --h3: clamp(1.2rem, 2.2vw, 1.75rem);
-    }
-
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f6f7fb; --bg-elev:#fff; --card:#fff;
-        --text:#0b0f14; --muted:#5a6672;
-        --line:#e9eef4; --accent:#2a8b85; --primary:#0ea5a3; --primary-700:#0b8d8b;
-      }
-      body { background-image:none !important; }
+      --primary-2: #45a29e;
+      --ring: rgba(102, 252, 241, 0.4);
+      --border: #1f2833;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.03);
     }
 
     * { box-sizing: border-box; }
+    html, body { height: 100%; }
 
-    body{
-      font-family: var(--font);
-      background: radial-gradient(1200px 600px at 80% -10%, rgba(102,252,241,.12), transparent 50%),
-                  radial-gradient(1000px 500px at 10% 110%, rgba(69,162,158,.12), transparent 50%),
-                  var(--bg);
-      color: var(--text);
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
       margin: 0;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Header */
-    h1{
-      text-align: center;
-      margin: 28px 16px 8px;
-      font-weight: 800;
-      color: var(--primary);
-      font-size: var(--h1);
-      letter-spacing: .4px;
-      text-shadow: 0 2px 20px rgba(102,252,241,.15);
-    }
-    h3{
-      margin: 18px 0 14px;
-      color: var(--primary);
-      text-align: center;
-      font-size: var(--h3);
-      font-weight: 800;
-      letter-spacing: .3px;
-    }
-    p.intro{
-      text-align: center;
-      max-width: 780px;
-      margin: 0 auto 22px;
-      font-size: 1.02rem;
-      line-height: 1.7;
-      color: var(--muted);
-      padding: 0 16px;
-    }
-
-    /* Nav */
-    nav{ text-align:center; margin: 18px 0 10px; }
-    nav a{
-      color: var(--primary);
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid color-mix(in oklab, var(--primary) 30%, transparent);
-      transition: transform .18s ease, background .18s ease, border-color .18s ease;
-    }
-    nav a:hover{
-      background: color-mix(in oklab, var(--primary) 18%, transparent);
-      transform: translateY(-1px);
-      border-color: color-mix(in oklab, var(--primary) 60%, transparent);
-    }
-
-    /* Layout principal */
-    .container{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px;
-      text-align: center;
-    }
-
-    /* Tarjeta global */
-    .global-config{
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-      margin: 10px auto 26px;
-    }
-
-    /* Campos */
-    .field{ display: grid; gap: 6px; margin: 10px 12px; text-align: left; }
-    .global-config .field{ display: inline-grid; vertical-align: top; }
-    .global-config{ display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 16px; justify-items: center; }
-    @media (max-width: 640px){
-      .global-config{ grid-template-columns: 1fr; }
-    }
-
-    label{
-      font-weight: 700;
-      color: color-mix(in oklab, var(--primary) 70%, var(--text));
-      font-size: .9rem;
-      letter-spacing: .2px;
-      text-align: left;
-    }
-    input, select{
-      width: 240px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, var(--bg-elev), color-mix(in oklab, var(--bg-elev) 88%, black));
       color: var(--text);
-      text-align: center;
-      transition: border-color .15s ease, box-shadow .15s ease, transform .05s ease;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
-    }
-    input:focus, select:focus{
-      outline: none;
-      border-color: color-mix(in oklab, var(--primary) 60%, var(--line));
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent);
-      transform: translateY(-1px);
+      background:
+        radial-gradient(1000px 500px at 10% -10%, rgba(102,252,241,0.08), transparent 60%),
+        radial-gradient(800px 400px at 110% 20%, rgba(69,162,158,0.08), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
     }
 
-    /* Botones */
-    button{
-      margin-top: 22px;
-      padding: 14px 20px;
-      background: linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 82%, black));
-      color: white;
-      border: 0;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: .2px;
-      box-shadow: 0 8px 20px rgba(69,162,158,.25);
-      transition: transform .12s ease, filter .18s ease, box-shadow .18s ease, background .18s ease;
+    h1 {
+      text-align: center; margin: 28px 0 10px; font-weight: 800; color: var(--primary);
+      font-size: clamp(2rem, 4vw, 3rem); letter-spacing: .5px;
+      text-shadow: 0 2px 12px rgba(102,252,241,.15);
     }
-    button:hover{
-      background: linear-gradient(180deg, var(--primary), var(--primary-700));
-      color: #0b0c10;
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(102,252,241,.25);
-    }
-    button:active{ transform: translateY(0); }
 
-    /* Escenarios */
-    .escenario{
-      margin: 0 0 22px;
-      padding: 18px;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, var(--card), color-mix(in oklab, var(--card) 88%, black));
+    h3 { margin: 20px 0 12px; color: var(--primary); text-align:center; font-size: clamp(1.25rem, 2.4vw, 2rem); font-weight: 700; }
+    p.intro { text-align: center; max-width: 800px; margin: 0 auto 26px; font-size: 1rem; line-height: 1.7; color: var(--muted); padding: 0 16px; }
+
+    nav { text-align:center; margin: 10px 0 24px; }
+    nav a {
+      display: inline-block;
+      color: var(--primary);
+      background: rgba(102,252,241,0.08);
+      border: 1px solid rgba(102,252,241,0.25);
+      padding: 8px 14px; margin: 0 8px;
+      border-radius: 999px; text-decoration: none; font-weight: 600;
+      transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
       box-shadow: var(--shadow);
     }
-    .escenario .field{ display: inline-grid; margin: 8px 10px; }
+    nav a:hover { background: rgba(102,252,241,0.16); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(102,252,241,.15); }
 
-    /* Aportes */
-    .bloque-aporte{
-      display: flex; gap: 12px; margin-top: 8px; align-items: center; justify-content: center;
-      flex-wrap: wrap;
+    .container { max-width: 1100px; margin: 0 auto; padding: 10px 20px 40px; }
+
+    .cluster { display:flex; gap: 16px; flex-wrap: wrap; justify-content: center; align-items: end; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00)), var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
     }
-    .bloque-aporte span{ min-width: 80px; text-align: right; color: var(--muted); font-weight: 700; }
-    .bloque-aporte input{ width: 140px; }
+
+    label { display:block; margin-bottom: 6px; font-weight: 700; color: #7fd8d4; font-size: .95rem; }
+    .field { display: grid; gap: 8px; text-align: left; min-width: 220px; }
+
+    input, select, button {
+      font: inherit;
+    }
+
+    input, select {
+      width: 100%; padding: 12px 12px; border-radius: 12px; border: 1px solid var(--border);
+      background: #121923; color: var(--text); text-align: center;
+      transition: box-shadow .2s ease, border-color .2s ease, transform .05s ease;
+    }
+    input:hover, select:hover { border-color: #28404e; }
+    input:focus, select:focus {
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--ring);
+      transform: translateY(-1px);
+    }
+
+    .global-config { text-align:center; margin-bottom: 24px; }
+    .global-config .field { align-items: center; }
+
+    .escenario { margin: 20px 0 28px; padding: 0 0 18px; border-bottom: 1px dashed var(--border); }
+
+    .bloque-aporte { display:flex; gap: 12px; margin-top: 8px; align-items: center; justify-content: center; }
+    .bloque-aporte span { min-width: 88px; text-align: right; color: var(--muted); font-weight: 600; }
+    .bloque-aporte input { width: 140px; }
+
+    .actions { text-align: center; margin-top: 12px; }
+    button.btn-primary {
+      margin-top: 10px; padding: 14px 22px; background: var(--primary-2); color: #0b0c10;
+      border: 1px solid rgba(102,252,241,0.25); border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 1.05rem;
+      letter-spacing: .2px; box-shadow: 0 10px 24px rgba(69,162,158,.25);
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+    }
+    button.btn-primary:hover { background: var(--primary); transform: translateY(-1px); box-shadow: 0 14px 28px rgba(102,252,241,.25); }
+    button.btn-pill { padding: 8px 12px; border-radius: 999px; background: #18222d; color: var(--text); border: 1px solid var(--border); font-weight: 700; }
+    button.btn-pill:hover { border-color: var(--primary); }
 
     /* Gráfico */
-    #grafico{
-      width: 100%;
-      max-width: 1000px;
-      height: 420px;
-      margin-top: 28px;
-      background: var(--bg-elev);
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-    #graficoContainer{
-      position: relative;
-      padding: 12px;
-      background: linear-gradient(180deg, var(--card), color-mix(in oklab, var(--card) 90%, black));
-      border-radius: calc(var(--radius) + 6px);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
+    #grafico { width: 100%; max-width: 1000px; height: 420px; margin-top: 28px; background: #0b0c10; border-radius: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
 
-    /* Botón ampliar */
-    #fullscreenBtn{
-      position: absolute;
-      top: 14px; right: 14px;
-      background: linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 82%, black));
-      color: white; border: none; padding: 9px 12px; border-radius: 10px; cursor: pointer; font-weight: 800;
-      box-shadow: 0 6px 16px rgba(69,162,158,.25);
-    }
-    #fullscreenBtn:hover{
-      background: linear-gradient(180deg, var(--primary), var(--primary-700));
-      color: #0b0c10;
-    }
+    .chart-wrap { position: relative; text-align: center; margin-top: 28px; }
+    #fullscreenBtn { position: absolute; top: 10px; right: 10px; }
 
-    /* Resultados */
-    .resultados{
-      margin-top: 22px;
-      background: linear-gradient(180deg, var(--bg-elev), color-mix(in oklab, var(--bg-elev) 90%, black));
-      padding: 16px;
-      border-radius: var(--radius);
-      text-align: left;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-    .resultados p{
-      margin: 8px 0;
-      font-size: .98rem;
-    }
+    .resultados { margin-top: 22px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00)), var(--card); padding: 18px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .resultados p { margin: 6px 0; }
 
-    /* Ads */
-    .adsense{ margin: 26px auto; text-align: center; min-height: 90px; }
+    .adsense { margin: 28px auto; text-align: center; min-height: 90px; filter: saturate(.85); }
 
     /* Overlay fullscreen */
-    #graficoOverlay{
-      display: none;
-      position: fixed; inset: 0;
-      width: 100vw; height: 100vh;
-      background:
-        radial-gradient(60% 60% at 50% 40%, rgba(102,252,241,.06), transparent 60%),
-        rgba(0,0,0,.88);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      backdrop-filter: blur(6px) saturate(120%);
-    }
-    #graficoOverlay canvas{
-      width: min(96vw, 1300px);
-      height: 80vh;
-      max-height: 90vh;
-      background: var(--bg-elev);
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      box-shadow: 0 20px 60px rgba(0,0,0,.5);
-      transition: height .3s ease;
-    }
-    #cerrarOverlay{
-      margin-top: 16px;
-      padding: 10px 14px;
-      background: linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 82%, black));
-      color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer;
-      box-shadow: 0 8px 18px rgba(69,162,158,.25);
-    }
-    #cerrarOverlay:hover{ background: linear-gradient(180deg, var(--primary), var(--primary-700)); color: #0b0c10; }
+    #graficoOverlay { display: none; position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(1,3,8,0.92); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(2px); }
+    #graficoOverlay canvas { width: 95vw; height: 80vh; max-height: 90vh; background: #0b0c10; border-radius: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: height .25s ease; }
 
-    /* Accesibilidad y micro-interacciones */
-    @media (prefers-reduced-motion: reduce){
-      *{ transition: none !important; }
+    #cerrarOverlay { margin-top: 14px; padding: 10px 14px; background: var(--primary-2); color: #0b0c10; border: 1px solid rgba(102,252,241,0.25); border-radius: 12px; font-weight: 800; cursor: pointer; }
+    #cerrarOverlay:hover { background: var(--primary); }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .bloque-aporte { gap: 8px; }
+      .bloque-aporte span { min-width: 72px; }
+      #grafico { height: 360px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
     }
   </style>
 </head>
@@ -297,56 +153,48 @@
   </nav>
 
   <div class="adsense">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-7492465327672473"
-         data-ad-slot="2717366869"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7492465327672473" data-ad-slot="2717366869" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <div class="container">
-    <div class="global-config">
+    <div class="global-config cluster card">
       <div class="field">
         <label for="numEscenarios">Número de escenarios</label>
-        <input type="number" id="numEscenarios" value="1" min="1" max="3" onchange="generarEscenarios()">
+        <input type="number" id="numEscenarios" value="1" min="1" max="3" onchange="generarEscenarios()" />
       </div>
       <div class="field">
-        <label for="aleatorioGlobal">Nivel de aleatoriedad (1–10)</label>
-        <input type="number" id="aleatorioGlobal" value="5" min="1" max="10">
+        <label for="aleatorioGlobal">Nivel de aleatoriedad (1-10)</label>
+        <input type="number" id="aleatorioGlobal" value="5" min="1" max="10" />
       </div>
     </div>
 
-    <div id="escenarios"></div>
-    <button onclick="calcular()">Calcular</button>
+    <div id="escenarios" class="card"></div>
+    <div class="actions"><button class="btn-primary" onclick="calcular()">Calcular</button></div>
 
-    <div id="graficoContainer" style="position: relative; margin-top: 28px;">
-      <button id="fullscreenBtn">🔍 Ampliar</button>
-      <canvas id="grafico"></canvas>
+    <div class="chart-wrap">
+      <button id="fullscreenBtn" class="btn-pill">🔍 Ampliar</button>
+      <div id="graficoContainer">
+        <canvas id="grafico"></canvas>
+      </div>
     </div>
 
     <div class="resultados" id="resultados"></div>
   </div>
 
-  <div id="graficoOverlay" aria-modal="true" role="dialog">
+  <div id="graficoOverlay">
     <canvas id="graficoFull"></canvas>
     <button id="cerrarOverlay">❌ Cerrar</button>
   </div>
 
   <div class="adsense">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-7492465327672473"
-         data-ad-slot="2717366869"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7492465327672473" data-ad-slot="2717366869" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    /* ====== JS ORIGINAL SIN CAMBIOS DE FUNCIONALIDAD ====== */
+    // === Datos de activos (sin cambios funcionales) ===
     const activos = {
       "Airbus": [0.112, 0.14],
       "Alphabet (Google)": [0.22, 0.1024],
@@ -372,6 +220,7 @@
     let chart;
     let chartFull;
 
+    // === Generación de escenarios (mismo flujo; se corrigen solo plantillas de texto para que el HTML sea válido) ===
     function generarEscenarios() {
       const n = parseInt(document.getElementById("numEscenarios").value);
       const contenedor = document.getElementById("escenarios");
@@ -381,43 +230,50 @@
         esc.className = "escenario";
         esc.innerHTML = `
           <h3>Escenario ${i}</h3>
-          <div class="field">
-            <label>Años de inversión</label>
-            <input type="number" id="anios_${i}" value="20" min="1" max="50">
-          </div>
-          <div class="field">
-            <label>Capital inicial (€)</label>
-            <input type="number" id="capital_${i}" value="1000">
-          </div>
-          <div class="field">
-            <label>Activo</label>
-            <select id="activo_${i}">${Object.keys(activos).map(a => `<option value="${a}">${a}</option>`).join('')}</select>
+          <div class="cluster">
+            <div class="field">
+              <label>Años de inversión</label>
+              <input type="number" id="anios_${i}" value="20" min="1" max="50">
+            </div>
+            <div class="field">
+              <label>Capital inicial (€)</label>
+              <input type="number" id="capital_${i}" value="1000">
+            </div>
+            <div class="field">
+              <label>Activo</label>
+              <select id="activo_${i}">
+                ${Object.keys(activos).map(a => `<option value="${a}">${a}</option>`).join('')}
+              </select>
+            </div>
           </div>
           <div id="bloques_${i}"></div>
         `;
         contenedor.appendChild(esc);
 
         generarBloques(i, 20);
-        document.getElementById(\`anios_\${i}\`).addEventListener("change", (e)=>generarBloques(i,e.target.value));
+        document.getElementById(`anios_${i}`).addEventListener("change", (e)=>generarBloques(i, e.target.value));
       }
     }
 
     function generarBloques(idEscenario, anios) {
       const bloques = Math.ceil(anios/5);
-      const div = document.getElementById(\`bloques_\${idEscenario}\`);
-      div.innerHTML = \`<label style="text-align:center; display:block; margin-top:15px;">Aportación mensual por periodos de 5 años</label>\`;
+      const div = document.getElementById(`bloques_${idEscenario}`);
+      div.innerHTML = `<label style="text-align:center; display:block; margin-top:15px;">Aportación mensual por periodos de 5 años</label>`;
       for (let b=1;b<=bloques;b++){
         const inicio = (b-1)*5+1;
         const fin = Math.min(b*5,anios);
-        div.innerHTML += \`<div class="bloque-aporte"><span>\${inicio}-\${fin}:</span>
-                          <input type="number" id="aporte_\${idEscenario}_\${b}" value="100"></div>\`;
+        div.innerHTML += `
+          <div class="bloque-aporte">
+            <span>${inicio}-${fin}:</span>
+            <input type="number" id="aporte_${idEscenario}_${b}" value="100">
+          </div>`;
       }
     }
 
     function calcular() {
       const n = parseInt(document.getElementById("numEscenarios").value);
       const aleatorioGlobal = parseFloat(document.getElementById("aleatorioGlobal").value);
-      const seed = Math.floor(Math.random()*1000000);
+      const seed = Math.floor(Math.random()*1000000); // Semilla global (visible en resultados)
 
       const ctx = document.getElementById("grafico").getContext("2d");
       const ctxFull = document.getElementById("graficoFull").getContext("2d");
@@ -426,26 +282,29 @@
 
       const datasets = [];
       const resultadosDiv = document.getElementById("resultados");
-      resultadosDiv.innerHTML = \`<p>Semilla aleatoria utilizada: \${seed}</p>\`;
+      resultadosDiv.innerHTML = `<p style="color:var(--muted)">Semilla aleatoria utilizada: <b>${seed}</b></p>`;
 
       for (let i = 1; i <= n; i++) {
+        // Reiniciamos el generador de aleatoriedad para cada escenario (misma secuencia entre escenarios)
         let randomGen = mulberry32(seed);
 
-        const anios = parseInt(document.getElementById(\`anios_\${i}\`).value);
-        const capital = parseFloat(document.getElementById(\`capital_\${i}\`).value);
-        const activo = document.getElementById(\`activo_\${i}\`).value;
+        const anios = parseInt(document.getElementById(`anios_${i}`).value);
+        const capital = parseFloat(document.getElementById(`capital_${i}`).value);
+        const activo = document.getElementById(`activo_${i}`).value;
         const [rentabilidad,varianza] = activos[activo];
         const meses = anios*12;
 
+        // Vector de aportaciones anuales
         let aportesAnuales = [];
         const bloques = Math.ceil(anios/5);
         for (let b = 1; b <= bloques; b++) {
-          const val = parseFloat(document.getElementById(\`aporte_\${i}_\${b}\`).value);
+          const val = parseFloat(document.getElementById(`aporte_${i}_${b}`).value);
           const inicio = (b-1)*5 + 1;
           const fin = Math.min(b*5, anios);
           for(let y=inicio; y<=fin; y++) aportesAnuales.push(val);
         }
 
+        // Simulación
         let saldo = capital;
         let historial = [saldo];
         let deposito = [capital];
@@ -461,71 +320,69 @@
           deposito.push(deposito[deposito.length-1] + aportesAnuales[anioActual]);
         }
 
-        const color = \`hsl(\${Math.random()*360},70%,60%)\`;
+        // Colores estéticos (HSL aleatorio) — visual únicamente
+        const color = `hsl(${Math.random()*360},70%,60%)`;
 
-        datasets.push({
-          label: \`Escenario \${i} (\${activo})\`,
-          data: historial,
-          borderColor: color,
-          fill: false,
-          tension: 0.1
-        });
+        datasets.push({ label: `Escenario ${i} (${activo})`, data: historial, borderColor: color, fill: false, tension: 0.22, pointRadius: 0 });
+        datasets.push({ label: `Depósito Escenario ${i}` , data: deposito , borderColor: color, fill: false, borderDash: [5,5], pointRadius: 0, tension: 0.22 });
 
-        datasets.push({
-          label: \`Depósito Escenario \${i}\`,
-          data: deposito,
-          borderColor: color,
-          fill: false,
-          borderDash: [5,5],
-          pointRadius: 0,
-          tension: 0.1
-        });
-
-        resultadosDiv.innerHTML += \`<p>
-          <b>Escenario \${i} (\${activo})</b> →
-          Final: €\${saldo.toFixed(2)} |
-          Invertido: €\${deposito[deposito.length-1].toFixed(2)} |
-          <span style="color:\${color}; font-weight:bold;">
-            Ganancia: €\${(saldo - deposito[deposito.length-1]).toFixed(2)}
-          </span>
-        </p>\`;
+        resultadosDiv.innerHTML += `
+          <p>
+            <b>Escenario ${i} (${activo})</b> →
+            Final: €${saldo.toFixed(2)} |
+            Invertido: €${deposito[deposito.length-1].toFixed(2)} |
+            <span style="color:${color}; font-weight:800;">Ganancia: €${(saldo - deposito[deposito.length-1]).toFixed(2)}</span>
+          </p>`;
       }
 
+      // === Gráfico principal: cambios estéticos en Chart.js ===
       const canvas = document.getElementById("grafico");
       canvas.style.width = "100%";
       canvas.style.height = "420px";
       canvas.width = canvas.offsetWidth;
       canvas.height = 420;
 
-      chart = new Chart(ctx, {
-        type:'line',
-        data:{
-          labels: Array.from({length: Math.max(...datasets.map(d=>d.data.length))}, (_,i)=>i),
-          datasets
+      const commonOptions = {
+        responsive: false,
+        maintainAspectRatio: false,
+        animation: { duration: 600, easing: 'easeOutQuart' },
+        plugins: {
+          legend: { position: 'bottom', labels: { color: '#e8eef3', padding: 16, usePointStyle: true, pointStyle: 'line' } },
+          tooltip: {
+            backgroundColor: 'rgba(3,7,18,0.9)',
+            titleColor: '#cfe8e6',
+            bodyColor: '#e8eef3',
+            borderColor: '#1f2833',
+            borderWidth: 1,
+            displayColors: false,
+            padding: 12
+          }
         },
-        options:{
-          responsive:false,
-          maintainAspectRatio:false,
-          plugins:{legend:{labels:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}}},
-          scales:{
-            x:{title:{display:true,text:'Mes',color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'},ticks:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}},
-            y:{title:{display:true,text:'€',color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'},ticks:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}}
+        scales: {
+          x: {
+            title: { display: true, text: 'Mes', color: '#d7e3ea', font: { weight: 700 } },
+            ticks: { color: '#c7d2da' },
+            grid: { color: 'rgba(203,213,225,0.08)' }
+          },
+          y: {
+            title: { display: true, text: '€', color: '#d7e3ea', font: { weight: 700 } },
+            ticks: { color: '#c7d2da' },
+            grid: { color: 'rgba(203,213,225,0.08)' }
           }
         }
+      };
+
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: Array.from({length: Math.max(...datasets.map(d=>d.data.length))}, (_,i)=>i), datasets },
+        options: commonOptions
       });
 
+      // Overlay responsive
       chartFull = new Chart(ctxFull, {
-        type:'line',
+        type: 'line',
         data: chart.data,
-        options:{
-          responsive:true,
-          maintainAspectRatio:false,
-          plugins:{legend:{labels:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}}},
-          scales:{
-            x:{title:{display:true,text:'Mes',color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'},ticks:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}},
-            y:{title:{display:true,text:'€',color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'},ticks:{color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#eaf1f7'}}
-          }
-        }
+        options: { ...commonOptions, responsive: true }
       });
     }
 
@@ -538,6 +395,7 @@
       }
     }
 
+    // Inicialización UI
     generarEscenarios();
 
     const fullscreenBtn = document.getElementById("fullscreenBtn");
@@ -547,28 +405,13 @@
     fullscreenBtn.addEventListener("click", () => {
       graficoOverlay.style.display = "flex";
       const canvasFull = document.querySelector("#graficoOverlay canvas");
-
-      if (window.innerWidth < 768) {
-        canvasFull.style.height = "80vh";
-      } else {
-        canvasFull.style.height = "80vh";
-      }
-
-      if(chartFull){
-        chartFull.options.maintainAspectRatio = false;
-        chartFull.resize();
-      }
+      if (window.innerWidth < 768) { canvasFull.style.height = "80vh"; } else { canvasFull.style.height = "80vh"; }
+      if(chartFull){ chartFull.options.maintainAspectRatio = false; chartFull.resize(); }
     });
 
-    cerrarOverlay.addEventListener("click", () => {
-      graficoOverlay.style.display = "none";
-    });
+    cerrarOverlay.addEventListener("click", () => { graficoOverlay.style.display = "none"; });
   </script>
 </body>
 </html>
-
-
-
-
 
 
