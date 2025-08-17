@@ -3,130 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estrategias de inversión a largo plazo</title>
-  <meta name="description" content="Descubre las mejores estrategias de inversión a largo plazo para aprovechar el interés compuesto, generar crecimiento sostenido y alcanzar la libertad financiera.">
-  <meta name="keywords" content="estrategias de inversión, interés compuesto, inversión a largo plazo, libertad financiera, ahorro, fondos indexados, ETFs">
+  <title>Estrategias de inversión a largo plazo (guía práctica)</title>
+  <meta name="description" content="Guía de estrategias a largo plazo: fondos indexados y ETFs, DCA, rebalanceo, gestión de riesgo, errores comunes y simulaciones con calculadora.">
+  <link rel="canonical" href="https://calculadora-inversion.vercel.app/estrategias-inversion.html">
+  <meta name="robots" content="index,follow">
   <style>
-    body {
-      font-family: Segoe UI, sans-serif;
-      background: #0b0c10;
-      color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      line-height: 1.7;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 30px;
-      background: #0b0c10;
-    }
-    h1, h2, h3 {
-      font-weight: 700;
-    }
-    h1 {
-      color: #66fcf1;
-      text-align: center;
-      font-size: 2.4rem;
-      margin-bottom: 30px;
-    }
-    h2 {
-      color: #45a29e;
-      margin-top: 40px;
-      font-size: 1.6rem;
-    }
-    p {
-      margin: 15px 0;
-      text-align: justify;
-    }
-    ul {
-      margin: 15px 0;
-      padding-left: 20px;
-    }
-    a {
-      color: #66fcf1;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .link-section {
-      text-align: center;
-      margin-top: 40px;
-    }
+    :root { --bg:#0b0c10; --text:#f0f0f0; --muted:#b7c0c8; --primary:#66fcf1; --primary2:#45a29e; }
+    body{font-family:Segoe UI,system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.75}
+    .container{max-width:900px;margin:0 auto;padding:40px 24px}
+    a{color:var(--primary);text-decoration:none;font-weight:600}
+    a:hover{text-decoration:underline}
+    h1{color:var(--primary);text-align:center;font-size:2.2rem;margin:0 0 10px}
+    .subtitle{color:var(--muted);text-align:center;margin-bottom:28px}
+    h2{color:var(--primary2);font-size:1.5rem;margin:32px 0 10px}
+    h3{color:#b2e7e4;margin:22px 0 8px}
+    p{text-align:justify;margin:12px 0}
+    ul,ol{padding-left:20px;margin:12px 0}
+    nav.breadcrumbs{font-size:.9rem;margin:12px 0 0;color:var(--muted)}
+    .toc{background:#0f1117;border:1px solid #1f2833;border-radius:12px;padding:14px 16px}
+    .note{background:#0f1117;border-left:3px solid var(--primary2);padding:12px 14px;border-radius:8px;margin:12px 0}
+    footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f2833;color:var(--muted);font-size:.9rem}
+    .adsense{margin:28px 0;text-align:center;min-height:90px}
   </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473" crossorigin="anonymous"></script>
+  <!-- Article schema básico -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Article",
+    "headline":"Estrategias de inversión a largo plazo (guía práctica)",
+    "author":{"@type":"Person","name":"Calculadora Inversión"},
+    "publisher":{"@type":"Organization","name":"Calculadora Inversión"},
+    "inLanguage":"es"
+  }
+  </script>
 </head>
 <body>
-
   <div class="container">
+    <nav class="breadcrumbs">
+      <a href="index.html">Inicio</a> › Estrategias de inversión
+    </nav>
+
     <header>
       <h1>Estrategias de inversión a largo plazo</h1>
+      <p class="subtitle">Cómo combinar constancia, diversificación y gestión del riesgo para aprovechar el interés compuesto.</p>
     </header>
+
+    <section class="toc">
+      <strong>Contenido</strong>
+      <ol>
+        <li><a href="#indexados">Fondos indexados y ETFs</a></li>
+        <li><a href="#dca">Ahorro periódico (DCA)</a></li>
+        <li><a href="#rebalanceo">Rebalanceo y asignación de activos</a></li>
+        <li><a href="#riesgo">Gestión del riesgo</a></li>
+        <li><a href="#errores">Errores comunes</a></li>
+        <li><a href="#simula">Simula tu estrategia</a></li>
+      </ol>
+    </section>
 
     <main>
       <article>
-        <p>
-          Invertir a largo plazo permite que el <strong>interés compuesto</strong> trabaje a tu favor 
-          y multiplique tu capital con el paso de los años.  
-          Una buena estrategia de inversión no se basa en obtener beneficios rápidos, 
-          sino en <strong>generar crecimiento sostenido</strong> minimizando el riesgo.
-        </p>
-
-        <h2>1. Fondos indexados y ETFs</h2>
-        <p>
-          Los <strong>fondos indexados</strong> y los <strong>ETFs</strong> son instrumentos que replican índices bursátiles 
-          como el S&P 500, MSCI World o Nasdaq 100.  
-          Sus ventajas son:
-        </p>
+        <h2 id="indexados">1) Fondos indexados y ETFs</h2>
+        <p>Replican índices amplios (p. ej., MSCI World, S&P 500) con comisiones bajas y diversificación automática. Son la base de muchas carteras a largo plazo.</p>
         <ul>
-          <li>Comisiones muy bajas</li>
-          <li>Diversificación automática en decenas o cientos de empresas</li>
-          <li>Históricamente, rendimientos sólidos a largo plazo</li>
+          <li>Costes reducidos y transparentes</li>
+          <li>Alta diversificación geográfica y sectorial</li>
+          <li>Fáciles de implementar y mantener</li>
         </ul>
 
-        <h2>2. Ahorro periódico automatizado</h2>
-        <p>
-          Invertir una cantidad fija cada mes —por ejemplo, 100 €— permite <strong>aprovechar la constancia</strong> 
-          sin necesidad de adivinar el mejor momento para entrar al mercado.  
-          Esta estrategia es conocida como <em>dollar-cost averaging</em> o promedio de coste en euros.
-        </p>
-        <p>
-          Al invertir automáticamente cada mes, beneficias al interés compuesto y reduces el impacto de la volatilidad.
-        </p>
+        <h2 id="dca">2) Ahorro periódico (DCA)</h2>
+        <p>Invertir una cantidad fija cada mes reduce el riesgo de entrar “todo de golpe” y favorece la disciplina. La constancia es clave para el interés compuesto.</p>
 
-        <h2>3. Reinvertir los beneficios</h2>
-        <p>
-          No retirar los beneficios y <strong>reinvertirlos</strong> es clave para que el interés compuesto haga su trabajo.  
-          Cada dividendo o ganancia reinvertida genera más capital que producirá nuevos intereses.
-        </p>
+        <h2 id="rebalanceo">3) Rebalanceo y asignación de activos</h2>
+        <p>Define una asignación objetivo (por ejemplo, 80% renta variable / 20% reserva) y <strong>rebalancea</strong> 1–2 veces al año o por bandas (±5%) para mantener el perfil de riesgo.</p>
 
-        <h2>4. Mantener la calma en caídas del mercado</h2>
-        <p>
-          El mercado puede experimentar caídas temporales.  
-          Los inversores a largo plazo que mantienen sus posiciones suelen recuperarse 
-          y aprovechar los periodos de crecimiento futuros.
-        </p>
-        <p>
-          La <strong>disciplina</strong> y la <strong>paciencia</strong> son fundamentales para que tu estrategia de inversión funcione.
-        </p>
+        <h2 id="riesgo">4) Gestión del riesgo</h2>
+        <ul>
+          <li>Horizonte temporal adecuado (mínimo varios años).</li>
+          <li>Fondo de emergencia separado para imprevistos.</li>
+          <li>No concentrar toda la cartera en un único activo o país.</li>
+        </ul>
 
-        <h2>Simula tus resultados antes de invertir</h2>
-        <p>
-          Antes de aplicar cualquier estrategia, es recomendable realizar <strong>simulaciones</strong> 
-          para ver cómo podría evolucionar tu dinero.  
-          Puedes usar nuestra 
-          <a href="index.html">calculadora de interés compuesto</a> 
-          para probar distintos escenarios de inversión y aportaciones mensuales.
-        </p>
+        <h2 id="errores">5) Errores comunes</h2>
+        <ul>
+          <li>Cambiar de estrategia por emociones tras caídas puntuales.</li>
+          <li>Perseguir “el activo de moda”.</li>
+          <li>Olvidar comisiones e impuestos en el cálculo real.</li>
+        </ul>
 
-        <div class="link-section">
-          <a href="que-es-interes-compuesto.html">◀ Volver a qué es el interés compuesto</a>
+        <h2 id="simula">6) Simula tu estrategia antes</h2>
+        <p>Pruébalo en la <a href="index.html">calculadora de interés compuesto</a>: elige activo, años y aportaciones por bloques de 5 años para ver cómo evoluciona tu plan.</p>
+
+        <div class="note">
+          Tip: documenta tu plan en 1 página (objetivo, asignación, calendario de aportaciones y rebalanceo). Ayuda a mantener la disciplina.
         </div>
+    
       </article>
     </main>
-  </div>
 
+    <footer>
+      <p>© Calculadora Inversión · <a href="index.html">Inicio</a> · <a href="que-es-interes-compuesto.html">Qué es el interés compuesto</a></p>
+    </footer>
+  </div>
 </body>
 </html>
 
