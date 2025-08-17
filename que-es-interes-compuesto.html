@@ -4,132 +4,115 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qué es el interés compuesto y cómo aprovecharlo</title>
-  <meta name="description" content="Descubre qué es el interés compuesto, cómo funciona y cómo aprovecharlo para hacer crecer tu dinero con inversiones a largo plazo. Aprende su fórmula y calcula tus ganancias.">
-  <meta name="keywords" content="interés compuesto, calculadora de interés compuesto, cómo invertir, finanzas personales, ahorro, inversiones a largo plazo, fórmula interés compuesto">
+  <meta name="description" content="Qué es el interés compuesto, cómo funciona, fórmula, ejemplos con y sin aportaciones, riesgos y límites. Guía práctica y calculadora gratuita.">
+  <link rel="canonical" href="https://calculadora-inversion.vercel.app/que-es-interes-compuesto.html">
+  <meta name="robots" content="index,follow">
   <style>
-    body {
-      font-family: Segoe UI, sans-serif;
-      background: #0b0c10;
-      color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      line-height: 1.7;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 30px;
-      background: #0b0c10;
-    }
-    h1, h2, h3 {
-      font-weight: 700;
-    }
-    h1 {
-      color: #66fcf1;
-      text-align: center;
-      font-size: 2.4rem;
-      margin-bottom: 30px;
-    }
-    h2 {
-      color: #45a29e;
-      margin-top: 40px;
-      font-size: 1.6rem;
-    }
-    p {
-      margin: 15px 0;
-      text-align: justify;
-    }
-    ul {
-      margin: 15px 0;
-      padding-left: 20px;
-    }
-    a {
-      color: #66fcf1;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .link-section {
-      text-align: center;
-      margin-top: 40px;
-    }
+    :root { --bg:#0b0c10; --text:#f0f0f0; --muted:#b7c0c8; --primary:#66fcf1; --primary2:#45a29e; }
+    body{font-family:Segoe UI,system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.75}
+    .container{max-width:900px;margin:0 auto;padding:40px 24px}
+    a{color:var(--primary);text-decoration:none;font-weight:600}
+    a:hover{text-decoration:underline}
+    h1{color:var(--primary);text-align:center;font-size:2.2rem;margin:0 0 10px}
+    .subtitle{color:var(--muted);text-align:center;margin-bottom:28px}
+    h2{color:var(--primary2);font-size:1.5rem;margin:32px 0 10px}
+    h3{color:#b2e7e4;margin:22px 0 8px}
+    p{text-align:justify;margin:12px 0}
+    ul,ol{padding-left:20px;margin:12px 0}
+    nav.breadcrumbs{font-size:.9rem;margin:12px 0 0;color:var(--muted)}
+    .toc{background:#0f1117;border:1px solid #1f2833;border-radius:12px;padding:14px 16px}
+    .note{background:#0f1117;border-left:3px solid var(--primary2);padding:12px 14px;border-radius:8px;margin:12px 0}
+    footer{margin-top:36px;padding-top:16px;border-top:1px solid #1f2833;color:var(--muted);font-size:.9rem}
+    .adsense{margin:28px 0;text-align:center;min-height:90px}
   </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473" crossorigin="anonymous"></script>
+  <!-- FAQ schema -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"¿Cuál es la fórmula del interés compuesto?","acceptedAnswer":{"@type":"Answer","text":"Capital final = Capital inicial × (1 + r)^n. Si hay aportaciones periódicas, se suma el valor futuro de una anualidad (o mensualidad) al resultado."}},
+      {"@type":"Question","name":"¿Conviene más el interés compuesto a largo plazo?","acceptedAnswer":{"@type":"Answer","text":"Sí. El interés compuesto necesita tiempo para que los intereses generen nuevos intereses. A mayor horizonte, mayor efecto acumulativo."}},
+      {"@type":"Question","name":"¿Qué limitaciones tiene esta calculadora?","acceptedAnswer":{"@type":"Answer","text":"Es una simulación educativa. No predice el futuro ni incorpora comisiones, impuestos o eventos extremos salvo que los incluyas en los parámetros."}}
+    ]
+  }
+  </script>
 </head>
 <body>
-
   <div class="container">
+    <nav class="breadcrumbs">
+      <a href="index.html">Inicio</a> › Qué es el interés compuesto
+    </nav>
+
     <header>
       <h1>Qué es el interés compuesto y cómo aprovecharlo</h1>
+      <p class="subtitle">La guía clara para entender la fórmula, ver ejemplos y evitar errores comunes.</p>
     </header>
+
+    <section class="toc">
+      <strong>Contenido</strong>
+      <ol>
+        <li><a href="#que-es">¿Qué es el interés compuesto?</a></li>
+        <li><a href="#formula">Fórmula y variables</a></li>
+        <li><a href="#ejemplos">Ejemplos prácticos</a></li>
+        <li><a href="#aportes">Aportaciones periódicas</a></li>
+        <li><a href="#riesgos">Riesgos y limitaciones</a></li>
+        <li><a href="#faq">Preguntas frecuentes</a></li>
+      </ol>
+    </section>
 
     <main>
       <article>
-        <p>
-          El <strong>interés compuesto</strong> es uno de los conceptos financieros más importantes 
-          para cualquier persona que busque <strong>hacer crecer su dinero</strong> a largo plazo. 
-          A diferencia del interés simple, donde los intereses se calculan únicamente sobre el capital inicial, 
-          el interés compuesto hace que <em>tus ganancias generen nuevas ganancias</em>. 
-          Este efecto acumulativo es conocido como el <strong>efecto bola de nieve</strong> en las inversiones.
-        </p>
+        <h2 id="que-es">¿Qué es el interés compuesto?</h2>
+        <p>El <strong>interés compuesto</strong> aparece cuando los intereses generados se suman al capital y, en los siguientes periodos, los intereses se calculan sobre ese nuevo total. Es el llamado “efecto bola de nieve”.</p>
 
-        <h2>¿Cómo funciona el interés compuesto?</h2>
-        <p>
-          Cada periodo, tus intereses se suman al capital inicial, y en el siguiente periodo se calculan intereses sobre ese nuevo total. 
-          Por ejemplo, si inviertes 1.000 € al 10% anual:
-        </p>
+        <h2 id="formula">Fórmula y variables</h2>
+        <p style="text-align:center;font-weight:700">Capital final = Capital inicial × (1 + <em>r</em>)<sup>n</sup></p>
+        <p>Donde <em>r</em> es la tasa por periodo (por ejemplo, anual) y <em>n</em> el número de periodos. Si hay <strong>aportaciones periódicas</strong>, se suma el valor futuro de esas aportaciones.</p>
+
+        <h2 id="ejemplos">Ejemplos prácticos (sin aportaciones)</h2>
+        <p>1.000 € al 10% anual:</p>
         <ul>
-          <li><strong>Año 1:</strong> Ganas 100 € → Total: 1.100 €</li>
-          <li><strong>Año 2:</strong> Ganas 110 € → Total: 1.210 €</li>
-          <li><strong>Año 3:</strong> Ganas 121 € → Total: 1.331 €</li>
-        </ul>
-        <p>
-          A medida que pasa el tiempo, la diferencia frente al interés simple se vuelve cada vez más grande. 
-          Este crecimiento exponencial es la base de muchas estrategias de <strong>ahorro e inversión a largo plazo</strong>.
-        </p>
-
-        <h2>La fórmula del interés compuesto</h2>
-        <p>
-          La fórmula general es:
-        </p>
-        <p style="text-align:center; font-size:1.2rem; font-weight:bold; color:#66fcf1;">
-          Capital final = Capital inicial × (1 + tasa de interés)<sup>n</sup>
-        </p>
-        <p>
-          Donde <strong>n</strong> es el número de periodos (años, meses, etc.) 
-          y la tasa de interés se expresa en forma decimal (por ejemplo, 5% = 0,05).  
-          Si además realizas <strong>aportaciones periódicas</strong>, el crecimiento es aún mayor.
-        </p>
-
-        <h2>Por qué es clave invertir a largo plazo</h2>
-        <p>
-          El interés compuesto necesita <strong>tiempo</strong> para mostrar su verdadero poder. 
-          Cuanto más dejes trabajar tus inversiones sin retirar dinero, 
-          mayor será el efecto de crecimiento. Por eso, muchos asesores financieros recomiendan:
-        </p>
-        <ul>
-          <li>Comenzar a invertir lo antes posible, aunque sea con pequeñas cantidades.</li>
-          <li>Hacer aportaciones periódicas y constantes.</li>
-          <li>No retirar el dinero ante pequeñas caídas del mercado.</li>
+          <li>Año 1: 1.100 €</li>
+          <li>Año 2: 1.210 €</li>
+          <li>Año 3: 1.331 €</li>
         </ul>
 
-        <h2>Calcula tus ganancias fácilmente</h2>
-        <p>
-          Si quieres ver cómo crecería tu dinero con diferentes <strong>activos de inversión</strong> y 
-          aportaciones periódicas, puedes usar nuestra 
-          <a href="index.html">calculadora de interés compuesto</a>.  
-          Es gratuita y te permitirá simular distintos escenarios antes de tomar decisiones de inversión.
-        </p>
-
-        <div class="link-section">
-          <a href="estrategias-inversion.html">▶ Ver estrategias de inversión recomendadas</a>
+        <h2 id="aportes">Ejemplo con aportaciones periódicas</h2>
+        <p>Capital inicial 1.000 €, aportación mensual 100 €, rentabilidad media anual 7% durante 20 años. El efecto de aportar de forma constante aumenta notablemente el capital final frente a no aportar.</p>
+        <div class="note">
+          Consejo: lo importante es la constancia (automatizar la aportación) y el horizonte temporal.
         </div>
+        <p>Puedes probar tus propios supuestos en la <a href="index.html">calculadora de interés compuesto</a> (elige activo, años y aportaciones por bloques).</p>
+
+        <h2 id="riesgos">Riesgos y limitaciones</h2>
+        <ul>
+          <li><strong>Volatilidad:</strong> los rendimientos reales fluctúan; una media histórica no garantiza resultados futuros.</li>
+          <li><strong>Costes e impuestos:</strong> comisiones y fiscalidad reducen el rendimiento neto.</li>
+          <li><strong>Disciplina:</strong> retirar dinero con frecuencia interrumpe el compuesto.</li>
+        </ul>
+
+        <h2 id="faq">Preguntas frecuentes</h2>
+        <h3>¿Interés simple vs compuesto?</h3>
+        <p>En el simple, los intereses se calculan solo sobre el capital inicial. En el compuesto, los intereses se reinvierten y también generan intereses.</p>
+
+        <h3>¿Mensual, trimestral o anual?</h3>
+        <p>Cuanto mayor es la frecuencia de capitalización (a igualdad de TAE), mayor suele ser el resultado, aunque la diferencia puede ser pequeña en horizontes cortos.</p>
+
+        <div class="note">
+          ¿Listo para experimentar? Prueba la <a href="index.html">calculadora</a> o continúa con las <a href="estrategias-inversion.html">estrategias de inversión</a>.
+        </div>
+
       </article>
     </main>
-  </div>
 
+    <footer>
+      <p>© Calculadora Inversión · <a href="index.html">Inicio</a> · <a href="estrategias-inversion.html">Estrategias</a></p>
+    </footer>
+  </div>
 </body>
 </html>
+
 
 
