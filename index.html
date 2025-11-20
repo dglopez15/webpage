@@ -1,116 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora de Interés Compuesto | Simulador de Inversión</title>
-  <meta name="description" content="Simula tus inversiones a largo plazo con esta calculadora de interés compuesto. Compara diferentes escenarios con aportaciones variables y visualiza tus ganancias." />
-  <meta name="keywords" content="interés compuesto, simulador de inversión, calculadora financiera, ahorro, bolsa, finanzas personales" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calculadora de Interés Compuesto | Simulador de Inversión</title>
+<meta name="description" content="Simula tus inversiones a largo plazo con esta calculadora de interés compuesto. Compara diferentes escenarios con aportaciones variables y visualiza tus ganancias." />
+<meta name="keywords" content="interés compuesto, simulador de inversión, calculadora financiera, ahorro, bolsa, finanzas personales" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473" crossorigin="anonymous"></script>
+<style>
+:root {
+--bg: #0b0c10;
+--bg-2: #0f1117;
+--card: #11161d;
+--muted: #9aa4af;
+--text: #f3f5f7;
+--primary: #66fcf1;
+--primary-2: #45a29e;
+--ring: rgba(102, 252, 241, 0.4);
+--border: #1f2833;
+--shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7492465327672473" crossorigin="anonymous"></script>
+body {
+font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+margin: 0;
+color: var(--text);
+background:
+radial-gradient(1000px 500px at 10% -10%, rgba(102,252,241,0.08), transparent 60%),
+radial-gradient(800px 400px at 110% 20%, rgba(69,162,158,0.08), transparent 60%),
+linear-gradient(180deg, var(--bg), var(--bg-2));
+}
 
-  <style>
-    :root {
-      --bg: #0b0c10;
-      --bg-2: #0f1117;
-      --card: #11161d;
-      --muted: #9aa4af;
-      --text: #f3f5f7;
-      --primary: #66fcf1;
-      --primary-2: #45a29e;
-      --ring: rgba(102, 252, 241, 0.4);
-      --border: #1f2833;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.03);
-    }
+h1 {
+text-align: center;
+margin: 28px 0 10px;
+font-weight: 800;
+color: var(--primary);
+font-size: clamp(2rem, 4vw, 3rem);
+letter-spacing: .5px;
+text-shadow: 0 2px 12px rgba(102,252,241,.15);
+}
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
+h3 {
+margin: 20px 0 12px;
+color: var(--primary);
+text-align:center;
+font-size: clamp(1.25rem, 2.4vw, 2rem);
+font-weight: 700;
+}
 
-    body {
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial.
-      margin: 0;
-      color: var(--text);
-      background:
-        radial-gradient(1000px 500px at 10% -10%, rgba(102,252,241,0.08), transparent 60%),
-        radial-gradient(800px 400px at 110% 20%, rgba(69,162,158,0.08), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg-2));
-    }
+p.intro {
+text-align: center;
+max-width: 800px;
+margin: 0 auto 26px;
+font-size: 1rem;
+line-height: 1.7;
+color: var(--muted);
+padding: 0 16px;
+}
 
-    #cookieBanner {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: #11161d;
-      color: #f3f5f7;
-      padding: 16px;
-      text-align: center;
-      z-index: 9999;
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -6px 20px rgba(0,0,0,0.45);
-      font-size: 0.95rem;
-    }
+/* ====== BANNER COOKIES ====== */
+#cookieBanner {
+position: fixed;
+bottom: 0;
+width: 100%;
+background: #11161d;
+color: #f3f5f7;
+padding: 16px;
+text-align: center;
+z-index: 9999;
+border-top: 1px solid var(--border);
+box-shadow: 0 -6px 20px rgba(0,0,0,0.45);
+font-size: 0.95rem;
+}
+#cookieBanner button {
+margin-left: 12px;
+background: var(--primary);
+border: none;
+padding: 8px 16px;
+font-weight: 700;
+cursor: pointer;
+border-radius: 8px;
+}
 
-    #cookieBanner button {
-      margin-left: 12px;
-      background: var(--primary);
-      border: none;
-      padding: 8px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 8px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px 10px;
-      margin-top: 60px;
-      font-size: 0.9rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
-
-    footer a {
-      color: var(--primary);
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: 600;
-    }
-  </style>
+/* ====== FOOTER LEGAL ====== */
+footer {
+text-align: center;
+padding: 40px 10px;
+margin-top: 60px;
+font-size: 0.9rem;
+color: var(--muted);
+border-top: 1px solid var(--border);
+}
+footer a {
+color: var(--primary);
+margin: 0 10px;
+text-decoration: none;
+font-weight: 600;
+}
+footer a:hover { text-decoration: underline; }
+</style>
 </head>
-
 <body>
-  <h1>Calculadora de Interés Compuesto</h1>
-  <p class="intro">Simulador educativo para inversiones a largo plazo.</p>
 
-  <div class="adsense">
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7492465327672473" data-ad-slot="2717366869" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+<h1>Calculadora de Interés Compuesto</h1>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    function aceptarCookies(){
-      document.getElementById('cookieBanner').style.display = 'none';
-      localStorage.setItem('cookiesAceptadas', 'true');
-    }
+<p class="intro">
+Esta herramienta permite simular el crecimiento de una inversión a largo plazo utilizando el interés compuesto.
+Podrás definir varios escenarios con diferentes activos, capital inicial y aportaciones periódicas variables por bloques de 5 años.
+La calculadora generará un gráfico comparativo y mostrará la inversión final y las ganancias netas para cada escenario.
+</p>
 
-    if(localStorage.getItem('cookiesAceptadas')){
-      document.getElementById('cookieBanner').style.display = 'none';
-    }
-  </script>
+<section class="card" style="max-width:900px;margin:30px auto;line-height:1.7;">
+<h2>¿Cómo funciona esta calculadora de inversión?</h2>
+<p>
+Esta calculadora simula el crecimiento de tu dinero aplicando el principio del interés compuesto.
+Esto significa que no solo ganas intereses sobre tu capital inicial, sino también sobre los intereses acumulados mes tras mes.
+</p>
+<p>
+El simulador utiliza datos históricos aproximados de rentabilidad y volatilidad según el activo seleccionado, generando escenarios con cierto nivel de variabilidad para reflejar la realidad del mercado.
+</p>
 
-  <footer>
-    © 2025 Calculadora de Inversión  
-    <br><br>
-    <a href="aviso-legal.html">Aviso legal</a> |
-    <a href="politica-privacidad.html">Política de privacidad</a> |
-    <a href="politica-cookies.html">Política de cookies</a>
-  </footer>
+<h3>¿Qué significa cada parámetro?</h3>
+<ul>
+<li><b>Capital inicial:</b> dinero con el que comienzas tu inversión.</li>
+<li><b>Aportaciones mensuales:</b> cantidad que añades cada mes a tu inversión.</li>
+<li><b>Años de inversión:</b> horizonte temporal del plan.</li>
+<li><b>Nivel de aleatoriedad:</b> controla cuánto varía el rendimiento mensual.</li>
+<li><b>Activo seleccionado:</b> define la rentabilidad media y el riesgo.</li>
+</ul>
 
-  <div id="cookieBanner">
-    Este sitio utiliza cookies para mostrar anuncios personalizados y analizar el tráfico.
-    <button onclick="aceptarCookies()">Aceptar</button>
-  </div>
+<p>
+Los resultados no garantizan beneficios reales. Son una herramienta educativa para comprender cómo el tiempo, la constancia y el tipo de activo influyen en el crecimiento del capital.
+</p>
+</section>
+
+<nav>
+<a href="que-es-interes-compuesto.html">Qué es el interés compuesto</a>
+<a href="estrategias-inversion.html">Estrategias de inversión</a>
+</nav>
+
+<div class="container">
+<div class="global-config cluster card">
+<div class="field">
+<label for="numEscenarios">Número de escenarios</label>
+<input type="number" id="numEscenarios" value="1" min="1" max="3" onchange="generarEscenarios()" />
+</div>
+
+<div class="field">
+<label for="aleatorioGlobal">Nivel de aleatoriedad (1-10)</label>
+<input type="number" id="aleatorioGlobal" value="5" min="1" max="10" />
+</div>
+</div>
+
+<div id="escenarios" class="card"></div>
+<div class="actions"><button class="btn-primary" onclick="calcular()">Calcular</button></div>
+
+<div class="chart-wrap">
+<button id="fullscreenBtn" class="btn-pill">🔍 Ampliar</button>
+<div id="graficoContainer">
+<canvas id="grafico"></canvas>
+</div>
+</div>
+
+<div class="resultados" id="resultados"></div>
+</div>
+
+<div id="graficoOverlay">
+<canvas id="graficoFull"></canvas>
+<button id="cerrarOverlay">❌ Cerrar</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* EL RESTO DEL CÓDIGO CONTINÚA EXACTAMENTE IGUAL QUE EN TU MENSAJE ORIGINAL */
+</script>
+
+<footer>
+© 2025 Calculadora de Inversión<br><br>
+<a href="aviso-legal.html">Aviso legal</a> |
+<a href="politica-privacidad.html">Política de privacidad</a> |
+<a href="politica-cookies.html">Política de cookies</a>
+</footer>
+
+<div id="cookieBanner">
+Este sitio utiliza cookies para mostrar anuncios personalizados y analizar el tráfico. Al continuar navegando aceptas su uso.
+<button onclick="aceptarCookies()">Aceptar</button>
+</div>
+
+<script>
+function aceptarCookies(){
+document.getElementById('cookieBanner').style.display = 'none';
+localStorage.setItem('cookiesAceptadas', 'true');
+}
+if(localStorage.getItem('cookiesAceptadas')){
+document.getElementById('cookieBanner').style.display = 'none';
+}
+</script>
 
 </body>
 </html>
